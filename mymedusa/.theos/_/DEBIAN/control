@@ -1,0 +1,10 @@
+Package: com.leroy.mymedusa
+Name: myMedusa
+Depends: mobilesubstrate
+Architecture: iphoneos-arm
+Description: Medusa
+Maintainer: LeroyB
+Author: LeroyB
+Section: Tweaks
+Version: 0.0.1-1+debug
+Installed-Size: 72
