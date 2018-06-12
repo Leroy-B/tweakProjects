@@ -7,7 +7,7 @@
 	- (id)specifiers {
 		
 		if(!_specifiers) {
-			_specifiers = [[self loadSpecifiersFromPlistName:@"CustomSBIconListPreferencesPreferences" target:self] retain];
+			_specifiers = [[self loadSpecifiersFromPlistName:@"CustomSBIconListPreferences" target:self] retain];
 		}
 		
 		return _specifiers;

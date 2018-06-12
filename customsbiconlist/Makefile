@@ -1,4 +1,4 @@
-TARGET = iphone:11.2:7.0
+TARGET = iphone:latest:7.0
 # TARGET = simulator:clang::11.0
 
 ARCHS = arm64
