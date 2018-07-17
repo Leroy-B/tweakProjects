@@ -7,4 +7,8 @@ Maintainer: LeroyB
 Author: LeroyB
 Section: Tweaks
 Version: 0.0.1-4+debug
+<<<<<<< HEAD
 Installed-Size: 388
+=======
+Installed-Size: 392
+>>>>>>> 01d5502c3f3e9e072ab010e879979e2630bc5e4b

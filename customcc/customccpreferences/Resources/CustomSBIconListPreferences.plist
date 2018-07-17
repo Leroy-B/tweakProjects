@@ -36,6 +36,7 @@
 				<key>placeholder</key>
 				<string>margin Top</string>
 				<key>defaults</key>
+<<<<<<< HEAD:customcc/customccpreferences/Resources/CustomSBIconListPreferences.plist
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
 				<string>marginPosXPrefValue</string>
@@ -53,6 +54,19 @@
 				<integer>2</integer>
 				<key>action</key>
 				<string>getGitHubURL</string>
+=======
+				<string>com.leroy.CustomSBIconListPreferences</string>
+				<key>key</key>
+				<string>marginLeftPrefValue</string>
+				<key>label</key>
+				<string>Num value margin left:</string>
+			</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>footerText</key>
+				<string>All my tweaks are open sourced on GitHub</string>
+>>>>>>> 01d5502c3f3e9e072ab010e879979e2630bc5e4b:customsbiconlist/customsbiconlistpreferences/Resources/CustomSBIconListPreferences.plist
 			</dict>
 			<dict>
 				<key>cell</key>
