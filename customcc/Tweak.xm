@@ -1,34 +1,38 @@
-/* How to Hook with Logos
-Hooks are written with syntax similar to that of an Objective-C @implementation.
-You don't need to #include <substrate.h>, it will be done automatically, as will
-the generation of a class list and an automatic constructor.
+#import <UIKit/UIKit.h>
 
-%hook ClassName
+//path of prefFile
+static NSString * const CustomCCPreferencesFile = @"/var/mobile/Library/Preferences/com.leroy.CustomCCPreferences.plist";
 
-// Hooking a class method
-+ (id)sharedInstance {
-	return %orig;
-}
+NSString *marginPosYString = @"";
+NSString *marginPosXString = @"";
+BOOL enableTweak = YES;
 
-// Hooking an instance method with an argument.
-- (void)messageName:(int)argument {
-	%log; // Write a message about this call, including its class, name and arguments, to the system log.
+%hook SBControlCenterWindow
 
-	%orig; // Call through to the original function with its original arguments.
-	%orig(nil); // Call through to the original function with a custom argument.
+    -(void)setFrame:(CGRect)arg1{
+        NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
 
-	// If you use %orig(), you MUST supply all arguments (except for self and _cmd, the automatically generated ones.)
-}
+        if(settings) {
+            
+            //switch button for enabling the tweak
+            enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
+            
+            marginPosYString = [settings objectForKey: @"marginPosYPrefValue"] ? [settings objectForKey: @"marginPosYPrefValue"] : marginPosYString;
+            marginPosXString = [settings objectForKey: @"marginPosXPrefValue"] ? [settings objectForKey: @"marginPosXPrefValue"] : marginPosXString;
+        }
+      
+        double marginPosY = [marginPosYString doubleValue];
+        double marginPosX = [marginPosXString doubleValue];
+      
+        if(enableTweak){
+            CGRect newFrame = arg1;
+            newFrame.origin.y = arg1.origin.y + marginPosY;
+            newFrame.origin.x = arg1.origin.x + marginPosX;
+            %orig(newFrame);
+        } else {
+            %orig;
+        }
+    }
 
-// Hooking an instance method with no arguments.
-- (id)noArguments {
-	%log;
-	id awesome = %orig;
-	[awesome doSomethingElse];
-
-	return awesome;
-}
-
-// Always make sure you clean up after yourself; Not doing so could have grave consequences!
 %end
-*/
+

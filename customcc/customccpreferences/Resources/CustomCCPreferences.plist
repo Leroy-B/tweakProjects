@@ -3,7 +3,7 @@
 <plist version="1.0">
 	<dict>
 		<key>title</key>
-		<string>CustomSBIconList</string>
+		<string>CustomCC</string>
 		<key>items</key>
 		<array>
 			<dict>
@@ -18,6 +18,14 @@
 				<key>label</key>
 				<string>Enable tweak</string>
 			</dict>
+            <dict>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>label</key>
+    			<string>Respring</string>
+    			<key>action</key>
+    			<string>respring</string>
+    		</dict>
 			<dict>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
@@ -36,7 +44,6 @@
 				<key>placeholder</key>
 				<string>margin Top</string>
 				<key>defaults</key>
-<<<<<<< HEAD:customcc/customccpreferences/Resources/CustomSBIconListPreferences.plist
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
 				<string>marginPosXPrefValue</string>
@@ -45,28 +52,27 @@
 			</dict>
             <dict>
 				<key>cell</key>
+				<string>PSGroupCell</string>
+				<key>footerText</key>
+				<string>All my tweaks are open sourced on GitHub! Use all of my code as long as you're open sourcing it as well.</string>
+			</dict>
+            <dict>
+				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>icon</key>
 				<string>GitHub</string>
 				<key>label</key>
-				<string>All my tweaks are open sourced on GitHub!</string>
+				<string>Source code on GitHub!</string>
 				<key>alignment</key>
 				<integer>2</integer>
 				<key>action</key>
 				<string>getGitHubURL</string>
-=======
-				<string>com.leroy.CustomSBIconListPreferences</string>
-				<key>key</key>
-				<string>marginLeftPrefValue</string>
-				<key>label</key>
-				<string>Num value margin left:</string>
 			</dict>
-			<dict>
+            <dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>footerText</key>
-				<string>All my tweaks are open sourced on GitHub</string>
->>>>>>> 01d5502c3f3e9e072ab010e879979e2630bc5e4b:customsbiconlist/customsbiconlistpreferences/Resources/CustomSBIconListPreferences.plist
+				<string>Send me a message :P</string>
 			</dict>
 			<dict>
 				<key>cell</key>

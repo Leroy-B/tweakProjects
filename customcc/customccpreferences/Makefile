@@ -3,10 +3,10 @@ ARCHS = arm64
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = CustomCCPreferences
-CustomSBIconListPreferences_FILES = CustomCCPreferences.mm
-CustomSBIconListPreferences_INSTALL_PATH = /Library/PreferenceBundles
-CustomSBIconListPreferences_FRAMEWORKS = UIKit
-CustomSBIconListPreferences_PRIVATE_FRAMEWORKS = Preferences
+CustomCCPreferences_FILES = CustomCCPreferences.mm
+CustomCCPreferences_INSTALL_PATH = /Library/PreferenceBundles
+CustomCCPreferences_FRAMEWORKS = UIKit
+CustomCCPreferences_PRIVATE_FRAMEWORKS = Preferences
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 

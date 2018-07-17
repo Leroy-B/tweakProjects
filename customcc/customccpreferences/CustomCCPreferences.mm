@@ -1,4 +1,6 @@
 #import <Preferences/Preferences.h>
+#include <spawn.h>
+#include <signal.h>
 
 @interface CustomCCPreferencesListController: PSListController @end
 
@@ -29,5 +31,13 @@
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/IDEK_a_Leroy"]];
 		}
 	}
+
+    -(void)respring {
+        pid_t pid;
+        int status;
+        const char* argv[] = {"killall", "backboardd", NULL};
+        posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)argv, NULL);
+        waitpid(pid, &status, WEXITED);
+    }
 
 @end

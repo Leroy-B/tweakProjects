@@ -1,0 +1,10 @@
+Package: com.leroy.customcc
+Name: CustomCC
+Depends: mobilesubstrate
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: LeroyB
+Author: LeroyB
+Section: Tweaks
+Version: 0.0.1-3+debug
+Installed-Size: 432
