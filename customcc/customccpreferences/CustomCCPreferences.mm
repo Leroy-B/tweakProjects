@@ -1,17 +1,23 @@
 #import <Preferences/Preferences.h>
 
-@interface CustomSBIconListPreferencesListController: PSListController @end
+@interface CustomCCPreferencesListController: PSListController @end
 
-@implementation CustomSBIconListPreferencesListController
+@implementation CustomCCPreferencesListController
 
 	- (id)specifiers {
 		
 		if(!_specifiers) {
-			_specifiers = [[self loadSpecifiersFromPlistName:@"CustomSBIconListPreferences" target:self] retain];
+			_specifiers = [[self loadSpecifiersFromPlistName:@"CustomCCPreferences" target:self] retain];
 		}
 		
 		return _specifiers;
 	}
+
+    - (void)getGitHubURL {
+        
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/tweakProjects"]];
+        
+    }
 	
 	- (void)getTwitterURL {
 		

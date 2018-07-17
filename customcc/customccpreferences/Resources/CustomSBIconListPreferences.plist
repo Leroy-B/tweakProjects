@@ -12,7 +12,7 @@
 				<key>default</key>
 				<false/>
 				<key>defaults</key>
-				<string>com.leroy.CustomSBIconListPreferences</string>
+				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
 				<string>toggleSwitch</string>
 				<key>label</key>
@@ -24,17 +24,35 @@
 				<key>placeholder</key>
 				<string>margin Top</string>
 				<key>defaults</key>
-				<string>com.leroy.CustomSBIconListPreferences</string>
+				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
-				<string>marginTopPrefValue</string>
+				<string>marginPosYPrefValue</string>
 				<key>label</key>
-				<string>Num value margin top:</string>
+				<string>Num value margin Y:</string>
 			</dict>
-			<dict>
+            <dict>
 				<key>cell</key>
-				<string>PSGroupCell</string>
-				<key>footerText</key>
-				<string>All my tweaks are open sourced on GitHub</string>
+				<string>PSEditTextCell</string>
+				<key>placeholder</key>
+				<string>margin Top</string>
+				<key>defaults</key>
+				<string>com.leroy.CustomCCPreferences</string>
+				<key>key</key>
+				<string>marginPosXPrefValue</string>
+				<key>label</key>
+				<string>Num value margin X:</string>
+			</dict>
+            <dict>
+				<key>cell</key>
+				<string>PSButtonCell</string>
+				<key>icon</key>
+				<string>GitHub</string>
+				<key>label</key>
+				<string>All my tweaks are open sourced on GitHub!</string>
+				<key>alignment</key>
+				<integer>2</integer>
+				<key>action</key>
+				<string>getGitHubURL</string>
 			</dict>
 			<dict>
 				<key>cell</key>

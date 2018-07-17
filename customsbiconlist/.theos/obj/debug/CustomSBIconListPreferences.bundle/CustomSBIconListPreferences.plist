@@ -26,9 +26,21 @@
 				<key>defaults</key>
 				<string>com.leroy.CustomSBIconListPreferences</string>
 				<key>key</key>
-				<string>marginTopPrefValue</string>
+				<string>marginPosYPrefValue</string>
 				<key>label</key>
-				<string>Num value margin top:</string>
+				<string>Num value margin Y:</string>
+			</dict>
+            <dict>
+				<key>cell</key>
+				<string>PSEditTextCell</string>
+				<key>placeholder</key>
+				<string>margin Top</string>
+				<key>defaults</key>
+				<string>com.leroy.CustomSBIconListPreferences</string>
+				<key>key</key>
+				<string>marginPosXPrefValue</string>
+				<key>label</key>
+				<string>Num value margin X:</string>
 			</dict>
 			<dict>
 				<key>cell</key>
