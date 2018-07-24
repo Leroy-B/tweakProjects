@@ -6,38 +6,31 @@
 
 @implementation CustomCCPreferencesListController
 
-	- (id)specifiers {
-		
+	-(id)specifiers {
 		if(!_specifiers) {
 			_specifiers = [[self loadSpecifiersFromPlistName:@"CustomCCPreferences" target:self] retain];
 		}
-		
 		return _specifiers;
 	}
 
-    - (void)getGitHubURL {
-        
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/tweakProjects"]];
-        
-    }
-	
-	- (void)getTwitterURL {
-		
+	-(void)getGitHubURL {
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/tweakProjects"]];
+	}
+
+	-(void)getTwitterURL {
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://"]]) {
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=IDEK_a_Leroy"]];
-		}
-		
-		else {
+		} else {
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/IDEK_a_Leroy"]];
 		}
 	}
 
-    -(void)respring {
-        pid_t pid;
-        int status;
-        const char* argv[] = {"killall", "backboardd", NULL};
-        posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)argv, NULL);
-        waitpid(pid, &status, WEXITED);
-    }
+	-(void)respring {
+		pid_t pid;
+		int status;
+		const char* argv[] = {"killall", "backboardd", NULL};
+		posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)argv, NULL);
+		waitpid(pid, &status, WEXITED);
+	}
 
 @end

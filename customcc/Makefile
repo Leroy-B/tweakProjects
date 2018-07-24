@@ -1,4 +1,5 @@
-TARGET = iphone:latest:7.0
+THEOS_DEVICE_IP = 192.168.1.105
+TARGET = iphone:11.2:7.0
 # TARGET = simulator:clang::11.0
 
 ARCHS = arm64

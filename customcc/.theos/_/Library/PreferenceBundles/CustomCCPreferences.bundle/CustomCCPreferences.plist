@@ -18,14 +18,40 @@
 				<key>label</key>
 				<string>Enable tweak</string>
 			</dict>
-            <dict>
-                <key>cell</key>
-                <string>PSButtonCell</string>
-                <key>label</key>
-    			<string>Respring</string>
-    			<key>action</key>
-    			<string>respring</string>
-    		</dict>
+			<dict>
+				<key>cell</key>
+				<string>PSButtonCell</string>
+				<key>label</key>
+				<string>Respring</string>
+				<key>action</key>
+				<string>respring</string>
+			</dict>
+
+			<dict>
+				<key>cell</key>
+				<string>PSSegmentCell</string>
+				<key>defaults</key>
+				<string>com.leroy.CustomCCPreferences</string>
+				<key>key</key>
+				<string>posChoice</string>
+				<key>validValues</key>
+				<array>
+					<string>choice1</string>
+					<string>choice2</string>
+					<string>choice3</string>
+				</array>
+				<key>validTitles</key>
+				<array>
+					<string>choice1</string>
+					<string>choice2</string>
+					<string>choice3</string>
+				</array>
+				<key>default</key>
+				<string>choice1</string>
+				<key>alignment</key>
+				<string>3</string>
+			</dict>
+
 			<dict>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
@@ -38,7 +64,7 @@
 				<key>label</key>
 				<string>Num value margin Y:</string>
 			</dict>
-            <dict>
+			<dict>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
 				<key>placeholder</key>
@@ -50,13 +76,13 @@
 				<key>label</key>
 				<string>Num value margin X:</string>
 			</dict>
-            <dict>
+			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>footerText</key>
 				<string>All my tweaks are open sourced on GitHub! Use all of my code as long as you're open sourcing it as well.</string>
 			</dict>
-            <dict>
+			<dict>
 				<key>cell</key>
 				<string>PSButtonCell</string>
 				<key>icon</key>
@@ -68,7 +94,7 @@
 				<key>action</key>
 				<string>getGitHubURL</string>
 			</dict>
-            <dict>
+			<dict>
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>footerText</key>
