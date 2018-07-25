@@ -1,5 +1,5 @@
 THEOS_DEVICE_IP = 192.168.1.105
-TARGET = iphone:11.2:7.0
+TARGET = iphone:11.2:11.0
 # TARGET = simulator:clang::11.0
 
 ARCHS = arm64
@@ -9,6 +9,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = CustomCC
 CustomCC_FILES = Tweak.xm
+#CustomCC_FRAMEWORKS = UIKit
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

@@ -1,4 +1,5 @@
 #import <Preferences/Preferences.h>
+#import <UIKit/UIKit.h>
 #include <spawn.h>
 #include <signal.h>
 
