@@ -1,6 +1,6 @@
 Package: com.leroy.customcc
 Name: CustomCC
-Depends: mobilesubstrate
+Depends: mobilesubstrate, ws.hbang.common (>= 1.11)
 Version: 0.1.1
 Architecture: iphoneos-arm
 Description: An awesome MobileSubstrate tweak!

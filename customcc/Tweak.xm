@@ -1,23 +1,19 @@
 #import <UIKit/UIKit.h>
+#import <Cephei/HBPreferences.h>
 
 //path of prefFile
-static NSString * const CustomCCPreferencesFile = @"/var/mobile/Library/Preferences/com.leroy.CustomCCPreferences.plist";
+//static NSString * const CustomCCPreferencesFile = @"/var/mobile/Library/Preferences/com.leroy.CustomCCPreferences.plist";
 
-//double screenHeight = [UIScreen mainScreen].bounds.size.height;
-//double screenWidth = [UIScreen mainScreen].bounds.size.width;
-//double screenHeight = [[UIScreen mainScreen] bounds].size.height;
-//double screenWidth = [[UIScreen mainScreen] bounds].size.width;
+static NSString *const kHBCBPreferencesDomain = @"com.leroy.CustomCCPreferences";
+HBPreferences *preferences;
+BOOL enableTweak;
+NSString *posPrefChoice;
+double posPrefX;
+double posPrefY;
 
-
-
-NSString *posChoice = @"";
-NSString *posXString = @"";
-NSString *posYString = @"";
-
-NSString *sizeChoice = @"";
-NSString *sizeWValue = @"";
-NSString *sizeHValue = @"";
-BOOL enableTweak = NO;
+NSString *sizePrefChoice;
+double sizePrefW;
+double sizePrefH;
 
 %hook SBControlCenterWindow
 
@@ -35,28 +31,28 @@ BOOL enableTweak = NO;
 
       //newFrame = CGRectInset(newFrame, newFrame.size.width * 0.5, newFrame.size.height * 0.5);
 
-      NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
+      //NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
 
-      if(settings){
-        enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
+      if(preferences){
+        //enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
         if(enableTweak){
 
-          posChoice = [settings objectForKey: @"posPrefChoice"] ? [settings objectForKey: @"posPrefChoice"] : posChoice;
-          posYString = [settings objectForKey: @"posYPrefValue"] ? [settings objectForKey: @"posYPrefValue"] : posYString;
-          posXString = [settings objectForKey: @"posXPrefValue"] ? [settings objectForKey: @"posXPrefValue"] : posXString;
+          // posPrefChoice = [preferences objectForKey: @"posPrefChoice"] ? [preferences objectForKey: @"posPrefChoice"] : posPrefChoice;
+          // posPrefY = [preferences objectForKey: @"posYPrefValue"] ? [preferences objectForKey: @"posYPrefValue"] : posPrefY;
+          // posPrefX = [preferences objectForKey: @"posXPrefValue"] ? [preferences objectForKey: @"posXPrefValue"] : posPrefX;
 
-          double posY = [posYString doubleValue];
-          double posX = [posXString doubleValue];
+          // double posY = [posPrefY doubleValue];
+          // double posX = [posPrefX doubleValue];
 
-          sizeChoice = [settings objectForKey: @"sizePrefChoice"] ? [settings objectForKey: @"sizePrefChoice"] : sizeChoice;
-          sizeWValue = [settings objectForKey: @"sizeWPrefValue"] ? [settings objectForKey: @"sizeWPrefValue"] : sizeWValue;
-          sizeHValue = [settings objectForKey: @"sizeHPrefValue"] ? [settings objectForKey: @"sizeHPrefValue"] : sizeHValue;
+          // sizePrefChoice = [preferences objectForKey: @"sizePrefChoice"] ? [preferences objectForKey: @"sizePrefChoice"] : sizePrefChoice;
+          // sizePrefW = [preferences objectForKey: @"sizeWPrefValue"] ? [preferences objectForKey: @"sizeWPrefValue"] : sizePrefW;
+          // sizePrefH = [preferences objectForKey: @"sizeHPrefValue"] ? [preferences objectForKey: @"sizeHPrefValue"] : sizePrefH;
 
-          double sizeW = [sizeWValue doubleValue];
-          double sizeH = [sizeHValue doubleValue];
+          // double sizeW = [sizePrefW doubleValue];
+          // double sizeH = [sizePrefH doubleValue];
 
           NSArray *posItems = @[@"Bottom", @"Top", @"Above Dock", @"Custom"];
-          int posItem = [posItems indexOfObject:posChoice];
+          int posItem = [posItems indexOfObject:posPrefChoice];
           switch (posItem) {
               case 0://Bottom
                 newFrame.origin.y = 330;//screenHeight;
@@ -68,8 +64,8 @@ BOOL enableTweak = NO;
                 newFrame.origin.y = 245;
                 break;
               case 3://Custom
-                newFrame.origin.y = posY;
-                newFrame.origin.x = posX;
+                newFrame.origin.y = posPrefY;
+                newFrame.origin.x = posPrefX;
                 break;
               default:
                 newFrame.origin.y = 0;
@@ -79,7 +75,7 @@ BOOL enableTweak = NO;
 
 
           NSArray *sizeItems = @[@"Full", @"Half", @"Custom"];
-          int sizeItem = [sizeItems indexOfObject:sizeChoice];
+          int sizeItem = [sizeItems indexOfObject:sizePrefChoice];
           switch (sizeItem) {
               case 0://Full
                 newFrame.origin.y = 0;
@@ -91,8 +87,8 @@ BOOL enableTweak = NO;
                 newFrame.size.height = screenHeight/2;
                 break;
               case 2://custom
-                newFrame.size.width = sizeW;
-                newFrame.size.height = sizeH;
+                newFrame.size.width = sizePrefW;
+                newFrame.size.height = sizePrefH;
                 break;
               default:
                 newFrame.origin.y = 0;
@@ -101,32 +97,11 @@ BOOL enableTweak = NO;
                 newFrame.size.width = 375;//screenWidth;
                 break;
           }
-
-          // if ([category isEqualToString:@"Some String"]) {
-          //
-          //
-          //
-          //
-          // }
           %orig(newFrame);
         } else {
           %orig(arg1);
         }
       }
-
-
-
-      // if(settings){
-      //     //switch button for enabling the tweak
-      //     enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
-      //     //posChoice = [settings objectForKey: @"posChoice"] ? [settings objectForKey: @"validValues"] : posChoice;
-      //
-      //     if(enableTweak){
-      //       %orig(newFrame);
-      //     } else {
-      //       %orig;
-      //     }
-      // }
     }
 
 %end
@@ -137,27 +112,15 @@ BOOL enableTweak = NO;
 
       CGRect newFrame = arg1;
       newFrame.size.height = 32;
-      NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
-      if(settings){
-        enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
+      //NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
+      if(preferences){
+        //enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
         if(enableTweak){
           %orig(newFrame);
         } else {
           %orig(arg1);
         }
       }
-
-      // if(settings){
-      //     //switch button for enabling the tweak
-      //     enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
-      //     //posChoice = [settings objectForKey: @"posChoice"] ? [settings objectForKey: @"validValues"] : posChoice;
-      //
-      //     if(enableTweak){
-      //       %orig(newFrame);
-      //     } else {
-      //       %orig;
-      //     }
-      // }
     }
 
 %end
@@ -168,68 +131,43 @@ BOOL enableTweak = NO;
 
       CGRect newFrame = arg1;
       newFrame.origin.y = -30;
-      NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
-      if(settings){
-        enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
+      //NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
+      if(preferences){
+        //enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
         if(enableTweak){
           %orig(newFrame);
         } else {
           %orig(arg1);
         }
       }
-
-      // if(settings){
-      //     //switch button for enabling the tweak
-      //     enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
-      //     //posChoice = [settings objectForKey: @"posChoice"] ? [settings objectForKey: @"validValues"] : posChoice;
-      //
-      //     if(enableTweak){
-      //       %orig(newFrame);
-      //     } else {
-      //       %orig;
-      //     }
-      // }
     }
 
 %end
 
+//extern NSString *const HBPreferencesDidChangeNotification;
 
-// if(settings) {
-//     //switch button for enabling the tweak
-//     enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
-//     posChoice = [settings objectForKey: @"posChoice"] ? [[settings objectForKey: @"posChoice"] valueForKey] : posChoice;
-//
-//     if(enableTweak){
-//
-//       %orig(newFrame);
-//     } else {
-//       %orig;
-//     }
-//
-// }
+%ctor {
+    preferences = [[HBPreferences alloc] initWithIdentifier:kHBCBPreferencesDomain];
+    [preferences registerDefaults:@{
+        @"enableTweak": @NO,
+        @"posPrefChoice": @"Bottom",
+        @"posPrefX":@"",
+        @"posPrefY":@"",
 
+        @"sizePrefChoice": @"Full",
+        @"sizePrefW":@"",
+        @"sizePrefH":@""
 
-    /*-(void)setFrame:(CGRect)arg1{
-        NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile: CustomCCPreferencesFile];
+    }];
 
-        if(settings) {
+    [preferences registerBool:&enableTweak default:NO forKey:@"enableTweak"];
 
-            //switch button for enabling the tweak
-            enableTweak = [settings objectForKey: @"toggleSwitch"] ? [[settings objectForKey: @"toggleSwitch"] boolValue] : enableTweak;
+    [preferences registerObject:&posPrefChoice default:@"Bottom" forKey:@"posPrefChoice"];
+    [preferences registerDouble:&posPrefX default:0 forKey:@"posPrefX"];
+    [preferences registerDouble:&posPrefY default:0 forKey:@"posPrefY"];
 
-            marginPosYString = [settings objectForKey: @"marginPosYPrefValue"] ? [settings objectForKey: @"marginPosYPrefValue"] : marginPosYString;
-            marginPosXString = [settings objectForKey: @"marginPosXPrefValue"] ? [settings objectForKey: @"marginPosXPrefValue"] : marginPosXString;
-        }
+    [preferences registerObject:&posPrefChoice default:@"sizePrefChoice" forKey:@"Full"];
+    [preferences registerDouble:&sizePrefW default:0 forKey:@"sizePrefW"];
+    [preferences registerDouble:&sizePrefH default:0 forKey:@"sizePrefH"];
 
-        double marginPosY = [marginPosYString doubleValue];
-        double marginPosX = [marginPosXString doubleValue];
-
-        if(enableTweak){
-            CGRect newFrame = arg1;
-            newFrame.origin.y = arg1.origin.y + marginPosY;
-            newFrame.origin.x = arg1.origin.x + marginPosX;
-            %orig(newFrame);
-        } else {
-            %orig;
-        }
-    }*/
+}

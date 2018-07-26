@@ -9,7 +9,8 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = CustomCC
 CustomCC_FILES = Tweak.xm
-#CustomCC_FRAMEWORKS = UIKit
+CustomCC_EXTRA_FRAMEWORKS += Cephei
+CustomCC_EXTRA_FRAMEWORKS += CepheiPrefs
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

@@ -7,14 +7,14 @@
 		<key>items</key>
 		<array>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSSwitchCell</string>
-				<key>default</key>
-				<false/>
 				<key>defaults</key>
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
-				<string>toggleSwitch</string>
+				<string>enableTweak</string>
 				<key>label</key>
 				<string>Enable tweak</string>
 			</dict>
@@ -27,12 +27,16 @@
 				<string>respring</string>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSGroupCell</string>
 				<key>footerText</key>
 				<string>Choose the position of the Control Center.</string>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSSegmentCell</string>
 				<key>defaults</key>
@@ -53,10 +57,10 @@
 					<string>Above Dock</string>
 					<string>Custom</string>
 				</array>
-				<key>default</key>
-				<string>Bottom</string>
 				<key>alignment</key>
 				<string>4</string>
+				<key>default</key>
+				<string>Bottom</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -65,6 +69,8 @@
 				<string>The top left part of the screen is point: top = 0, left = 0</string>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
 				<key>placeholder</key>
@@ -72,13 +78,15 @@
 				<key>defaults</key>
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
-				<string>posYPrefValue</string>
+				<string>posPrefY</string>
 				<key>label</key>
 				<string>Numeric value for pixels from the top:</string>
 				<key>isNumeric</key>
 				<true/>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
 				<key>placeholder</key>
@@ -86,7 +94,7 @@
 				<key>defaults</key>
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
-				<string>posXPrefValue</string>
+				<string>posPrefX</string>
 				<key>label</key>
 				<string>Numeric value for pixels from the left:</string>
 				<key>isNumeric</key>
@@ -99,6 +107,8 @@
 				<string>Choose the size of the Control Center.</string>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSSegmentCell</string>
 				<key>defaults</key>
@@ -117,10 +127,10 @@
 					<string>Half</string>
 					<string>Custom</string>
 				</array>
-				<key>default</key>
-				<string>Half</string>
 				<key>alignment</key>
 				<string>3</string>
+				<key>default</key>
+				<string>Half</string>
 			</dict>
 			<dict>
 				<key>cell</key>
@@ -129,6 +139,8 @@
 				<string>The default size of the Control Center is: height = 667, width = 375</string>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
 				<key>placeholder</key>
@@ -136,13 +148,15 @@
 				<key>defaults</key>
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
-				<string>sizeHPrefValue</string>
+				<string>sizePrefH</string>
 				<key>label</key>
 				<string>Numeric value for the height:</string>
 				<key>isNumeric</key>
 				<true/>
 			</dict>
 			<dict>
+				<key>PostNotification</key>
+				<string>com.leroy.CustomCCPreferences/ReloadPrefs</string>
 				<key>cell</key>
 				<string>PSEditTextCell</string>
 				<key>placeholder</key>
@@ -150,7 +164,7 @@
 				<key>defaults</key>
 				<string>com.leroy.CustomCCPreferences</string>
 				<key>key</key>
-				<string>sizeWPrefValue</string>
+				<string>sizePrefW</string>
 				<key>label</key>
 				<string>Numeric value for the width:</string>
 				<key>isNumeric</key>

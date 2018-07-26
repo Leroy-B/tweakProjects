@@ -7,6 +7,8 @@ CustomCCPreferences_FILES = CustomCCPreferences.mm
 CustomCCPreferences_INSTALL_PATH = /Library/PreferenceBundles
 CustomCCPreferences_FRAMEWORKS = UIKit
 CustomCCPreferences_PRIVATE_FRAMEWORKS = Preferences
+CustomCCPreferences_EXTRA_FRAMEWORKS += Cephei
+CustomCCPreferences_EXTRA_FRAMEWORKS += CepheiPrefs
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 
