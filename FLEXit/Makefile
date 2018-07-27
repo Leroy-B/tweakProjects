@@ -1,5 +1,5 @@
-TARGET = simulator:clang::7.0
-ARCHS = x86_64
+TARGET = iphone::11.0
+ARCHS = arm64
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = FLEXit
