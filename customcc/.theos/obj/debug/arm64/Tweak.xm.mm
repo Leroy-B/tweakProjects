@@ -23,7 +23,7 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class CCUIHeaderPocketView; @class CCUIModuleCollectionView; @class SBControlCenterWindow; 
+@class CCUIModuleCollectionView; @class SBControlCenterWindow; @class CCUIHeaderPocketView; 
 static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
 
 #line 4 "Tweak.xm"
@@ -50,7 +50,7 @@ static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SEL
     } else {
 
       if ([posPrefChoice isEqualToString:@"Bottom"]){
-        newFrame.origin.y = screenHeight - [sizePrefH doubleValue];
+        newFrame.origin.y = screenHeight - newFrame.size.height;
       } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
         newFrame.origin.y = screenHeight/2;
       } else if ([posPrefChoice isEqualToString:@"Top"]) {

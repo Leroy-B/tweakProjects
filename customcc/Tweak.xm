@@ -24,7 +24,7 @@
     } else {
 
       if ([posPrefChoice isEqualToString:@"Bottom"]){
-        newFrame.origin.y = screenHeight - [sizePrefH doubleValue];
+        newFrame.origin.y = screenHeight - newFrame.size.height;
       } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
         newFrame.origin.y = screenHeight/2;
       } else if ([posPrefChoice isEqualToString:@"Top"]) {
