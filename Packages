@@ -1,0 +1,192 @@
+Package: com.leroy.bocheats
+Version: 0.0.1-1+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 72
+Depends: mobilesubstrate
+Filename: ./bocheats/packages/com.leroy.bocheats_0.0.1-1+debug_iphoneos-arm.deb
+Size: 3032
+MD5sum: 1f1a542f8771ec123d4a0cd3ea7e88a2
+SHA1: 2c3db998aa6e4d8314418193a6cdedd9ab1b6b10
+SHA256: 3a3e8355d53614b2467fb13dda5f2e25e8809ea77abb166b81504df00afdac95
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: boCheats
+
+Package: com.leroy.customcarrier
+Version: 0.0.1-1+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 516
+Depends: mobilesubstrate
+Filename: ./customcarrier/packages/com.leroy.customcarrier_0.0.1-1+debug_iphoneos-arm.deb
+Size: 246980
+MD5sum: 611c019b363549e53c63f46bad343ec6
+SHA1: 14e1df9928596227215d9f0e6ac70b9acc20d1a9
+SHA256: 6656c31de246474815ace8d68615f4714f9b5a2f8f82270cffa7b62a5c554559
+Section: Tweaks
+Description: Change the carrier string in the statusbar.
+Author: LeroyB
+Name: CustomCarrier
+
+Package: com.leroy.customcarrier
+Version: 1.0-1+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 516
+Depends: mobilesubstrate
+Filename: ./customcarrier/packages/com.leroy.customcarrier_1.0-1+debug_iphoneos-arm.deb
+Size: 246996
+MD5sum: 4c5690a1b1a29920abe0143f591a3027
+SHA1: a849ce1844be30a789dd7b5efaf3bea590a4144d
+SHA256: f26c406803042f6b2439c6c40b124444a7a27198da73e37c257a911db7a5ebd3
+Section: Tweaks
+Description: Change the carrier string in the statusbar.
+Author: LeroyB
+Name: CustomCarrier
+
+Package: com.leroy.customcc
+Version: 0.1.1-75+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 204
+Depends: mobilesubstrate, ws.hbang.common (>= 1.11), firmware(>=11.0), preferenceloader
+Filename: ./customcc/packages/com.leroy.customcc_0.1.1-75+debug_iphoneos-arm.deb
+Size: 27858
+MD5sum: 2c83db162b3274586ed250d944048b2f
+SHA1: 28fdc0ea641c91128d3cfa10bfd46b546d22510b
+SHA256: 7989ba2a35db069dfc29dbaddb309d64019ed930dc5b5985a812724cef9e3f10
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomCC
+
+Package: com.leroy.customcc
+Version: 0.1.1-76+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 204
+Depends: mobilesubstrate, ws.hbang.common (>= 1.11), firmware(>=11.0), preferenceloader
+Filename: ./customcc/packages/com.leroy.customcc_0.1.1-76+debug_iphoneos-arm.deb
+Size: 27832
+MD5sum: e83d7f0884f212068b49654cee97c123
+SHA1: 1f2ca6d7361c94164611445d1bb966886d098831
+SHA256: 951deafc638707cda07f2515c112ca448aa389745c2f5e55e1ff0183a4269af0
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomCC
+
+Package: com.leroy.customcc
+Version: 0.1.1-77+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 204
+Depends: mobilesubstrate, ws.hbang.common (>= 1.11), firmware(>=11.0), preferenceloader
+Filename: ./customcc/packages/com.leroy.customcc_0.1.1-77+debug_iphoneos-arm.deb
+Size: 27858
+MD5sum: c583e47abcad8ab16983ff5cde27db9a
+SHA1: b5cc577dbaa01518c917e9dc6c65f122d91682cf
+SHA256: d5ac0d997a3089a289ee2953761335261f141e3b400272ced2266d0c735017c6
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomCC
+
+Package: com.leroy.customcc
+Version: 0.1.1-78+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 204
+Depends: mobilesubstrate, ws.hbang.common (>= 1.11), firmware(>=11.0), preferenceloader
+Filename: ./customcc/packages/com.leroy.customcc_0.1.1-78+debug_iphoneos-arm.deb
+Size: 27908
+MD5sum: 99b46de027084e08b095cdd79f3dab33
+SHA1: 5726c59e7e15fa33a4a60145fbf07d53109fd11c
+SHA256: 2697dc8e7a8a773851392fee6844f7fe2569fe4fd9b1798151850784a9229bb5
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomCC
+
+Package: com.leroy.customsbiconlist
+Version: 0.0.1-1+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 388
+Depends: mobilesubstrate
+Filename: ./customsbiconlist copy/packages/com.leroy.customsbiconlist_0.0.1-1+debug_iphoneos-arm.deb
+Size: 244644
+MD5sum: 8c59877e338d516c90ecb4269bda2681
+SHA1: 80c5b9ce702acb3d37698feac860b3002e742153
+SHA256: fe41834812fc96eac0179858c8d765ad9e2ba1168ec7b9437d9da1cbbb83310f
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomSBIconList
+
+Package: com.leroy.customsbiconlist
+Version: 0.0.1-3+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 388
+Depends: mobilesubstrate
+Filename: ./customsbiconlist/packages/com.leroy.customsbiconlist_0.0.1-3+debug_iphoneos-arm.deb
+Size: 244642
+MD5sum: 720167073421f97bb890b20e8c62d5f3
+SHA1: e955037635b56af67a3faefaeb6aee629016c325
+SHA256: 4c687d079b1725996d49315ead18f6109d758e7bd22a9d5acd7cf26070a39270
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomSBIconList
+
+Package: com.leroy.customsbiconlist
+Version: 0.0.1-4+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 388
+Depends: mobilesubstrate
+Filename: ./customsbiconlist/packages/com.leroy.customsbiconlist_0.0.1-4+debug_iphoneos-arm.deb
+Size: 244762
+MD5sum: c7eaf5768d2c87a4495e501ddbe5c06a
+SHA1: 40fd4f1612f6deef63caef02c63fbfd9f55fb4e6
+SHA256: 80498c1d8c86ccd5e81b53e5348eed3e14c1f7bdb5e1029400ac43e432cf853c
+Section: Tweaks
+Description: An awesome MobileSubstrate tweak!
+Author: LeroyB
+Name: CustomSBIconList
+
+Package: com.leroy.mymedusa
+Version: 0.0.1-1+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 72
+Depends: mobilesubstrate
+Filename: ./mymedusa/packages/com.leroy.mymedusa_0.0.1-1+debug_iphoneos-arm.deb
+Size: 3424
+MD5sum: eb1fd490c54b47a7c8ba87a260426d35
+SHA1: 01ea31ade37a14cfb97123736223f6c72a0289e4
+SHA256: 3caea4a537fc7e2e38b721ab81d95730573c8e19a4a5a4b081c8bf8abb6bcb26
+Section: Tweaks
+Description: Medusa
+Author: LeroyB
+Name: myMedusa
+
+Package: com.leroyb.flexit
+Version: 0.0.1-1+debug
+Architecture: iphoneos-arm
+Maintainer: LeroyB
+Installed-Size: 1360
+Depends: mobilesubstrate, firmware (>= 8.0)
+Filename: ./FLEXit/packages/com.leroyb.flexit_0.0.1-1+debug_iphoneos-arm.deb
+Size: 253490
+MD5sum: 31ba0578bf3215880baf81b06d65a4a3
+SHA1: 756c85092e35e728fd3c9b399a3c6f5c2128f8cf
+SHA256: ba86ae6f0d99b1a635d34bf63176a82ad2aff573cc3a5c5032c6dec1880d1d4f
+Section: Tweaks
+Description: Open source, easy to maintain, FLEX show tool. Hold on the status bar to show FLEX toolbar. Confirmed working on iPhone X, iOS 11.1.2
+Author: Flipboard
+Name: FLEXit
+
