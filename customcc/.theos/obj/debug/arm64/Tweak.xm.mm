@@ -23,13 +23,41 @@
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class CCUIModuleCollectionView; @class CCUIHeaderPocketView; @class SBControlCenterWindow; 
-static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
+@class CCUIModuleCollectionView; @class SBControlCenterWindow; @class CCUIHeaderPocketView; 
+static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
 
 #line 4 "Tweak.xm"
 
 
-  static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1){
+  static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
+      double myAlpha = arg1;
+      NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
+      bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
+      NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
+      NSString *alphaViewPref = [preferences objectForKey:@"alphaViewPref"];
+
+      if(!enableTweak){
+        return _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, arg1);
+      } else {
+        if ([alphaViewPrefChoice isEqualToString:@"100"]){
+          myAlpha = 100;
+        } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
+          myAlpha = 50;
+        } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
+          myAlpha = 25;
+        } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
+          if ([alphaViewPref isEqualToString:@""]) {
+            myAlpha = 100;
+          } else {
+            myAlpha = [alphaViewPref doubleValue];
+          }
+        }
+        _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, myAlpha/100);
+      }
+
+  }
+
+  static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1) {
 
     CGRect newFrame = arg1;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
@@ -48,7 +76,6 @@ static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SEL
     if(!enableTweak){
       return _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, arg1);
     } else {
-      arg1.backgroundColor = [UIColor greenColor];
       if ([posPrefChoice isEqualToString:@"Bottom"]){
         newFrame.origin.y = screenHeight - newFrame.size.height;
       } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
@@ -104,10 +131,25 @@ static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SEL
 
     static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1){
       CGRect newFrame = arg1;
-      newFrame.size.height = 32;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
+      NSString *posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
+      NSString *posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
+
       if(enableTweak){
+        if ([posHeaderViewPrefChoice isEqualToString:@"Default"]){
+          newFrame.size.height = 64;
+        } else if ([posHeaderViewPrefChoice isEqualToString:@"Half"]) {
+          newFrame.size.height = 32;
+        } else if ([posHeaderViewPrefChoice isEqualToString:@"Quarter"]) {
+          newFrame.size.height = 16;
+        } else if ([posHeaderViewPrefChoice isEqualToString:@"Custom"]) {
+          if ([posHeaderViewPrefH isEqualToString:@""]) {
+            newFrame.size.height = 64;
+          } else {
+            newFrame.size.height = [posHeaderViewPrefH doubleValue];
+          }
+        }
         _logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$(self, _cmd, newFrame);
       } else {
         _logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$(self, _cmd, arg1);
@@ -122,7 +164,7 @@ static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SEL
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posPrefChoice"];
+      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
       NSString *posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
       NSString *posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
 
@@ -133,7 +175,7 @@ static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SEL
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Top"]) {
           newFrame.origin.y = -30;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Bottom"]) {
-          newFrame.origin.y = arg1.origin.y - 50;
+          newFrame.origin.y = -50;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Custom"]) {
           if ([posCollectionViewPrefX isEqualToString:@""]) {
             newFrame.origin.x = 0;
@@ -154,5 +196,5 @@ static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SEL
 
 
 static __attribute__((constructor)) void _logosLocalInit() {
-{Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
-#line 130 "Tweak.xm"
+{Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
+#line 172 "Tweak.xm"

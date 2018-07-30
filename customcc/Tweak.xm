@@ -3,7 +3,35 @@
 
 %hook SBControlCenterWindow
 
-  -(void)setFrame:(CGRect)arg1{
+  -(void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)arg1 {
+      double myAlpha = arg1;
+      NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
+      bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
+      NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
+      NSString *alphaViewPref = [preferences objectForKey:@"alphaViewPref"];
+
+      if(!enableTweak){
+        return %orig(arg1);
+      } else {
+        if ([alphaViewPrefChoice isEqualToString:@"100"]){
+          myAlpha = 100;
+        } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
+          myAlpha = 50;
+        } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
+          myAlpha = 25;
+        } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
+          if ([alphaViewPref isEqualToString:@""]) {
+            myAlpha = 100;
+          } else {
+            myAlpha = [alphaViewPref doubleValue];
+          }
+        }
+        %orig(myAlpha/100);
+      }
+
+  }
+
+  -(void)setFrame:(CGRect)arg1 {
 
     CGRect newFrame = arg1;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
@@ -22,7 +50,6 @@
     if(!enableTweak){
       return %orig(arg1);
     } else {
-      arg1.backgroundColor = [UIColor greenColor];
       if ([posPrefChoice isEqualToString:@"Bottom"]){
         newFrame.origin.y = screenHeight - newFrame.size.height;
       } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
@@ -78,10 +105,25 @@
 
     -(void)setFrame:(CGRect)arg1{
       CGRect newFrame = arg1;
-      newFrame.size.height = 32;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
+      NSString *posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
+      NSString *posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
+
       if(enableTweak){
+        if ([posHeaderViewPrefChoice isEqualToString:@"Default"]){
+          newFrame.size.height = 64;
+        } else if ([posHeaderViewPrefChoice isEqualToString:@"Half"]) {
+          newFrame.size.height = 32;
+        } else if ([posHeaderViewPrefChoice isEqualToString:@"Quarter"]) {
+          newFrame.size.height = 16;
+        } else if ([posHeaderViewPrefChoice isEqualToString:@"Custom"]) {
+          if ([posHeaderViewPrefH isEqualToString:@""]) {
+            newFrame.size.height = 64;
+          } else {
+            newFrame.size.height = [posHeaderViewPrefH doubleValue];
+          }
+        }
         %orig(newFrame);
       } else {
         %orig(arg1);
@@ -96,7 +138,7 @@
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posPrefChoice"];
+      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
       NSString *posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
       NSString *posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
 
@@ -107,7 +149,7 @@
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Top"]) {
           newFrame.origin.y = -30;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Bottom"]) {
-          newFrame.origin.y = arg1.origin.y - 50;
+          newFrame.origin.y = -50;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Custom"]) {
           if ([posCollectionViewPrefX isEqualToString:@""]) {
             newFrame.origin.x = 0;

@@ -111,6 +111,29 @@
 						return;
           }
     }
+
+		if ([[specifier properties][@"key"] isEqualToString:@"alphaViewPref"]) {
+
+          NSScanner *scanner = [NSScanner scannerWithString:value];
+          float f;
+          BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
+
+          if (!isNumber && [value length]) {
+						UIAlertController * alert = [UIAlertController
+												alertControllerWithTitle:@"CustomCC: ERROR"
+																				 message:@"The value for your custom 'alpha' has to be numeric!"
+																	preferredStyle:UIAlertControllerStyleAlert];
+						UIAlertAction* okButton = [UIAlertAction
+														actionWithTitle:@"OK"
+																			style:UIAlertActionStyleDefault
+																		handler:^(UIAlertAction * action) {
+					                                //
+					                          }];
+						[alert addAction:okButton];
+						[self presentViewController:alert animated:YES completion:nil];
+						return;
+          }
+    }
 	NSString *path = [NSString stringWithFormat:@"/private/var/mobile/Library/Preferences/%@.plist", [specifier properties][@"defaults"]];
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
 	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];

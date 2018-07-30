@@ -1,4 +1,4 @@
-THEOS_DEVICE_IP = 192.168.1.105
+THEOS_DEVICE_IP = 192.168.1.37
 TARGET = iphone:11.2:11.0
 # TARGET = simulator:clang::11.0
 
