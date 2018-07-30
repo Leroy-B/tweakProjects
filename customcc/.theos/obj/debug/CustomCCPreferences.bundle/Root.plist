@@ -56,7 +56,7 @@
 				<string>Custom</string>
 			</array>
 			<key>alignment</key>
-			<string>4</string>
+			<string>5</string>
 			<key>default</key>
 			<string>Midpoint</string>
 		</dict>
@@ -161,6 +161,78 @@
 			<string>sizePrefW</string>
 			<key>label</key>
 			<string>Custom 'width' value:</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Choose the position of the controls collection view in the Control Center. For custom values, select 'Custom' above and use the input fields below.</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>posCollectionViewPrefChoice</string>
+			<key>validValues</key>
+			<array>
+				<string>Default</string>
+				<string>Top</string>
+				<string>Bottom</string>
+				<string>Custom</string>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>Default</string>
+				<string>Top</string>
+				<string>Bottom</string>
+				<string>Custom</string>
+			</array>
+			<key>alignment</key>
+			<string>4</string>
+			<key>default</key>
+			<string>Default</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>y</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>posCollectionViewPrefY</string>
+			<key>label</key>
+			<string>Custom collection 'y' value:</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>x</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>posCollectionViewPrefX</string>
+			<key>label</key>
+			<string>Custom collection 'x' value:</string>
 		</dict>
 		<dict>
 			<key>cell</key>

@@ -18,99 +18,99 @@
 		return (settings[[specifier properties][@"key"]]) ?: [specifier properties][@"default"];
 	}
 
-- (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
+	- (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
 
-      if ([[specifier properties][@"key"] isEqualToString:@"posPrefY"]) {
+    if ([[specifier properties][@"key"] isEqualToString:@"posPrefY"]) {
 
-            NSScanner *scanner = [NSScanner scannerWithString:value];
-            float f;
-            BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
+          NSScanner *scanner = [NSScanner scannerWithString:value];
+          float f;
+          BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
 
-            if (!isNumber && [value length]) {
-							UIAlertController * alert = [UIAlertController
-													alertControllerWithTitle:@"CustomCC: ERROR"
-																					 message:@"The value for your custom 'y position' has to be numeric!"
-																		preferredStyle:UIAlertControllerStyleAlert];
-							UIAlertAction* okButton = [UIAlertAction
-															actionWithTitle:@"OK"
-																				style:UIAlertActionStyleDefault
-																			handler:^(UIAlertAction * action) {
-						                                //
-						                          }];
-							[alert addAction:okButton];
-							[self presentViewController:alert animated:YES completion:nil];
-							return;
-            }
-      }
+          if (!isNumber && [value length]) {
+						UIAlertController * alert = [UIAlertController
+												alertControllerWithTitle:@"CustomCC: ERROR"
+																				 message:@"The value for your custom 'y position' has to be numeric!"
+																	preferredStyle:UIAlertControllerStyleAlert];
+						UIAlertAction* okButton = [UIAlertAction
+														actionWithTitle:@"OK"
+																			style:UIAlertActionStyleDefault
+																		handler:^(UIAlertAction * action) {
+					                                //
+					                          }];
+						[alert addAction:okButton];
+						[self presentViewController:alert animated:YES completion:nil];
+						return;
+          }
+    }
 
-			if ([[specifier properties][@"key"] isEqualToString:@"posPrefX"]) {
+		if ([[specifier properties][@"key"] isEqualToString:@"posPrefX"]) {
 
-            NSScanner *scanner = [NSScanner scannerWithString:value];
-            float f;
-            BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
+          NSScanner *scanner = [NSScanner scannerWithString:value];
+          float f;
+          BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
 
-            if (!isNumber && [value length]) {
-							UIAlertController * alert = [UIAlertController
-													alertControllerWithTitle:@"CustomCC: ERROR"
-																					 message:@"The value for your costom 'x position' has to be numeric!"
-																		preferredStyle:UIAlertControllerStyleAlert];
-							UIAlertAction * okButton = [UIAlertAction
-															actionWithTitle:@"OK"
-																				style:UIAlertActionStyleDefault
-																			handler:^(UIAlertAction * action) {
-						                                //
-						                          }];
-							[alert addAction:okButton];
-							[self presentViewController:alert animated:YES completion:nil];
-							return;
-            }
-      }
+          if (!isNumber && [value length]) {
+						UIAlertController * alert = [UIAlertController
+												alertControllerWithTitle:@"CustomCC: ERROR"
+																				 message:@"The value for your costom 'x position' has to be numeric!"
+																	preferredStyle:UIAlertControllerStyleAlert];
+						UIAlertAction * okButton = [UIAlertAction
+														actionWithTitle:@"OK"
+																			style:UIAlertActionStyleDefault
+																		handler:^(UIAlertAction * action) {
+					                                //
+					                          }];
+						[alert addAction:okButton];
+						[self presentViewController:alert animated:YES completion:nil];
+						return;
+          }
+    }
 
-			if ([[specifier properties][@"key"] isEqualToString:@"sizePrefH"]) {
+		if ([[specifier properties][@"key"] isEqualToString:@"sizePrefH"]) {
 
-            NSScanner *scanner = [NSScanner scannerWithString:value];
-            float f;
-            BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
+          NSScanner *scanner = [NSScanner scannerWithString:value];
+          float f;
+          BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
 
-            if ((!isNumber || f < 0) && [value length]) {
-							UIAlertController * alert = [UIAlertController
-													alertControllerWithTitle:@"CustomCC: ERROR"
-																					 message:@"The value for your custom 'height' has to be numeric and positive!"
-																		preferredStyle:UIAlertControllerStyleAlert];
-							UIAlertAction * okButton = [UIAlertAction
-															actionWithTitle:@"OK"
-																				style:UIAlertActionStyleDefault
-																			handler:^(UIAlertAction * action) {
-						                                //
-						                          }];
-							[alert addAction:okButton];
-							[self presentViewController:alert animated:YES completion:nil];
-							return;
-            }
-      }
+          if ((!isNumber || f < 0) && [value length]) {
+						UIAlertController * alert = [UIAlertController
+												alertControllerWithTitle:@"CustomCC: ERROR"
+																				 message:@"The value for your custom 'height' has to be numeric and positive!"
+																	preferredStyle:UIAlertControllerStyleAlert];
+						UIAlertAction * okButton = [UIAlertAction
+														actionWithTitle:@"OK"
+																			style:UIAlertActionStyleDefault
+																		handler:^(UIAlertAction * action) {
+					                                //
+					                          }];
+						[alert addAction:okButton];
+						[self presentViewController:alert animated:YES completion:nil];
+						return;
+          }
+    }
 
-			if ([[specifier properties][@"key"] isEqualToString:@"sizePrefW"]) {
+		if ([[specifier properties][@"key"] isEqualToString:@"sizePrefW"]) {
 
-            NSScanner *scanner = [NSScanner scannerWithString:value];
-            float f;
-            BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
+          NSScanner *scanner = [NSScanner scannerWithString:value];
+          float f;
+          BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
 
-            if ((!isNumber || f < 0) && [value length]) {
-							UIAlertController * alert = [UIAlertController
-													alertControllerWithTitle:@"CustomCC: ERROR"
-																					 message:@"The value for your custom 'width' has to be numeric and positive!"
-																		preferredStyle:UIAlertControllerStyleAlert];
-							UIAlertAction * okButton = [UIAlertAction
-															actionWithTitle:@"OK"
-																				style:UIAlertActionStyleDefault
-																			handler:^(UIAlertAction * action) {
-						                                //
-						                          }];
-							[alert addAction:okButton];
-							[self presentViewController:alert animated:YES completion:nil];
-							return;
-            }
-      }
+          if ((!isNumber || f < 0) && [value length]) {
+						UIAlertController * alert = [UIAlertController
+												alertControllerWithTitle:@"CustomCC: ERROR"
+																				 message:@"The value for your custom 'width' has to be numeric and positive!"
+																	preferredStyle:UIAlertControllerStyleAlert];
+						UIAlertAction * okButton = [UIAlertAction
+														actionWithTitle:@"OK"
+																			style:UIAlertActionStyleDefault
+																		handler:^(UIAlertAction * action) {
+					                                //
+					                          }];
+						[alert addAction:okButton];
+						[self presentViewController:alert animated:YES completion:nil];
+						return;
+          }
+    }
 	NSString *path = [NSString stringWithFormat:@"/private/var/mobile/Library/Preferences/%@.plist", [specifier properties][@"defaults"]];
 	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
 	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];
