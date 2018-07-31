@@ -1,7 +1,65 @@
 #import <UIKit/UIKit.h>
 #define preferencesPath [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.leroy.CustomCCPreferences.plist"]
 
+@interface SBControlCenterWindow : UIView
+  @property (nonatomic, assign, readwrite, setter=_setCornerRadius:) CGFloat _cornerRadius;
+  -(double)cornerRadius;
+@end
+
+// @interface NCMaterialView : UIView {
+// 	unsigned long long _styleOptions;
+// 	_UIBackdropView* _backdropView;
+// 	UIView* _lightOverlayView;
+// 	UIView* _whiteOverlayView;
+// 	UIView* _cutoutOverlayView;
+// 	NCMaterialSettings* _settings;
+// }
+// @property (assign,nonatomic) double grayscaleValue;
+// @property (assign,nonatomic) double cornerRadius;
+// -(void)setCornerRadius:(double)arg1 ;
+// -(double)cornerRadius;
+// -(double)_continuousCornerRadius;
+// -(void)_setContinuousCornerRadius:(double)arg1 ;
+// -(void)settings:(id)arg1 changedValueForKey:(id)arg2 ;
+// -(void)_configureIfNecessary;
+// -(void)_configureBackdropViewIfNecessary;
+// -(void)_setSubviewsContinuousCornerRadius:(double)arg1 ;
+// -(double)grayscaleValue;
+// -(double)_subviewsContinuousCornerRadius;
+// @end
+
 %hook SBControlCenterWindow
+
+  -(double)cornerRadius {
+    return 25;
+  }
+
+  // @property (assign,setter=_setCornerRadius:,nonatomic) CGFloat _cornerRadius;
+  //
+  // -(void)_setCornerRadius:(CGFloat)arg1 {
+  //   CGFloat myRadius = arg1;
+  //   myRadius = 25;
+  //   %orig(myRadius);
+  // }
+
+  // -(void)_setCornerRadius:(CGFloat)arg1 {
+  //   %orig(20);
+  // }
+
+//   - (void)layoutSubviews {
+//   	//[super layoutSubviews];
+//   	CGFloat cornerRadius = 20;
+//   	[layoutSubviews _setCornerRadius:cornerRadius];
+// }
+
+  // - (CGFloat)_cornerRadius {
+  //   return self.bounds.size.width/2;
+  // }
+  //
+  // - (void)_setCornerRadius:(CGFloat)cornerRadius {
+  // 	_highlightStateBackgroundView._cornerRadius = cornerRadius;
+  // 	_normalStateBackgroundView.backdropView.layer.cornerRadius = cornerRadius;
+  // }
 
   -(void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)arg1 {
       double myAlpha = arg1;
@@ -147,9 +205,9 @@
           newFrame.origin.x = 0;
           newFrame.origin.y = 0;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Top"]) {
-          newFrame.origin.y = -30;
+          newFrame.origin.y = -40;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Bottom"]) {
-          newFrame.origin.y = -50;
+          newFrame.origin.y = 50;
         } else if ([posCollectionViewPrefChoice isEqualToString:@"Custom"]) {
           if ([posCollectionViewPrefX isEqualToString:@""]) {
             newFrame.origin.x = 0;
