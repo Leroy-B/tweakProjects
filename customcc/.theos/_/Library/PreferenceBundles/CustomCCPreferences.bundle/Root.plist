@@ -495,7 +495,7 @@
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>label</key>
-			<string>Donate via Monero 🐸</string>
+			<string>Donate via Monero ;)</string>
 			<key>action</key>
 			<string>showMonero</string>
 		</dict>

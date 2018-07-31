@@ -1,7 +1,7 @@
 Package: com.leroy.customcc
 Name: CustomCC
 Depends: mobilesubstrate, firmware(>=11.0), preferenceloader
-Version: 0.1.2
+Version: 0.2.1
 Architecture: iphoneos-arm
 Description: Customize you Control Center Page!
 Maintainer: LeroyB
