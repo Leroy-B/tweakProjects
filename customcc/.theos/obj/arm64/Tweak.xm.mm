@@ -34,14 +34,13 @@ double mydockHeight;
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBDockView; @class CCUIModuleCollectionView; @class SBControlCenterWindow; @class CCUIHeaderPocketView; 
+@class CCUIHeaderPocketView; @class SBDockView; @class SBControlCenterWindow; @class CCUIModuleCollectionView; 
 static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forSnapshot$)(_LOGOS_SELF_TYPE_INIT SBDockView*, SEL, id, BOOL) _LOGOS_RETURN_RETAINED; static SBDockView* _logos_method$_ungrouped$SBDockView$initWithDockListView$forSnapshot$(_LOGOS_SELF_TYPE_INIT SBDockView*, SEL, id, BOOL) _LOGOS_RETURN_RETAINED; static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
 
 #line 15 "Tweak.xm"
 
   static SBDockView* _logos_method$_ungrouped$SBDockView$initWithDockListView$forSnapshot$(_LOGOS_SELF_TYPE_INIT SBDockView* __unused self, SEL __unused _cmd, id arg1, BOOL arg2) _LOGOS_RETURN_RETAINED {
     mydockHeight = self.dockHeight;
-    NSLog(@"**** mydockHeight: %f", mydockHeight);
     return _logos_orig$_ungrouped$SBDockView$initWithDockListView$forSnapshot$(self, _cmd, arg1, arg2);
   }
 
@@ -53,8 +52,10 @@ static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forS
       double myAlpha = 100;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
-      NSString *alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
+      NSString *alphaViewPrefChoice = @"100";
+      NSString *alphaViewPrefCustom = @"";
+      alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
+      alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
 
       if(!enableTweak){
         return _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, arg1);
@@ -78,7 +79,6 @@ static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forS
   }
 
   static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1) {
-    NSLog(@"**** mydockHeight1: %f", mydockHeight);
     CGRect newFrame = arg1;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
@@ -88,16 +88,24 @@ static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forS
     bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
 
     
-    NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
-    NSString *posPrefX = [preferences objectForKey:@"posPrefX"];
-    NSString *posPrefY = [preferences objectForKey:@"posPrefY"];
+    NSString *posPrefChoice = @"Bottom";
+    NSString *posPrefX = @"";
+    NSString *posPrefY = @"";
+    posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
+    posPrefX = [preferences objectForKey:@"posPrefX"];
+    posPrefY = [preferences objectForKey:@"posPrefY"];
     
-    NSString *sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
-    NSString *sizePrefW = [preferences objectForKey:@"sizePrefW"];
-    NSString *sizePrefH = [preferences objectForKey:@"sizePrefH"];
+    NSString *sizePrefChoice = @"Half";
+    NSString *sizePrefW = @"";
+    NSString *sizePrefH = @"";
+    sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
+    sizePrefW = [preferences objectForKey:@"sizePrefW"];
+    sizePrefH = [preferences objectForKey:@"sizePrefH"];
     
-    NSString *cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
-    NSString *cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
+    NSString *cornerRadiusPrefChoice = @"Default";
+    NSString *cornerRadiusPrefCustom = @"";
+    cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
+    cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
 
     if(!enableTweak){
       return _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, arg1);
@@ -185,8 +193,10 @@ static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forS
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
-      NSString *posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
+      NSString *posHeaderViewPrefChoice = @"Default";
+      NSString *posHeaderViewPrefH = @"";
+      posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
+      posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
 
       if(enableTweak){
         if ([posHeaderViewPrefChoice isEqualToString:@"Default"]){
@@ -216,9 +226,12 @@ static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forS
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
-      NSString *posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
-      NSString *posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
+      NSString *posCollectionViewPrefChoice = @"Default";
+      NSString *posCollectionViewPrefX = @"";
+      NSString *posCollectionViewPrefY = @"";
+      posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
+      posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
+      posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
 
       if(enableTweak){
         if ([posCollectionViewPrefChoice isEqualToString:@"Default"]){
@@ -249,4 +262,4 @@ static SBDockView* (*_logos_orig$_ungrouped$SBDockView$initWithDockListView$forS
 
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$SBDockView = objc_getClass("SBDockView"); MSHookMessageEx(_logos_class$_ungrouped$SBDockView, @selector(initWithDockListView:forSnapshot:), (IMP)&_logos_method$_ungrouped$SBDockView$initWithDockListView$forSnapshot$, (IMP*)&_logos_orig$_ungrouped$SBDockView$initWithDockListView$forSnapshot$);Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
-#line 224 "Tweak.xm"
+#line 237 "Tweak.xm"

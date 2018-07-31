@@ -15,7 +15,6 @@ double mydockHeight;
 %hook SBDockView
   -(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
     mydockHeight = self.dockHeight;
-    NSLog(@"**** mydockHeight: %f", mydockHeight);
     return %orig(arg1, arg2);
   }
 %end
@@ -27,8 +26,10 @@ double mydockHeight;
       double myAlpha = 100;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
-      NSString *alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
+      NSString *alphaViewPrefChoice = @"100";
+      NSString *alphaViewPrefCustom = @"";
+      alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
+      alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
 
       if(!enableTweak){
         return %orig(arg1);
@@ -52,7 +53,6 @@ double mydockHeight;
   }
 
   -(void)setFrame:(CGRect)arg1 {
-    NSLog(@"**** mydockHeight1: %f", mydockHeight);
     CGRect newFrame = arg1;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
@@ -62,16 +62,24 @@ double mydockHeight;
     bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
 
     //CC pos
-    NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
-    NSString *posPrefX = [preferences objectForKey:@"posPrefX"];
-    NSString *posPrefY = [preferences objectForKey:@"posPrefY"];
+    NSString *posPrefChoice = @"Bottom";
+    NSString *posPrefX = @"";
+    NSString *posPrefY = @"";
+    posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
+    posPrefX = [preferences objectForKey:@"posPrefX"];
+    posPrefY = [preferences objectForKey:@"posPrefY"];
     //CC size
-    NSString *sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
-    NSString *sizePrefW = [preferences objectForKey:@"sizePrefW"];
-    NSString *sizePrefH = [preferences objectForKey:@"sizePrefH"];
+    NSString *sizePrefChoice = @"Half";
+    NSString *sizePrefW = @"";
+    NSString *sizePrefH = @"";
+    sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
+    sizePrefW = [preferences objectForKey:@"sizePrefW"];
+    sizePrefH = [preferences objectForKey:@"sizePrefH"];
     //CC cornerRadius
-    NSString *cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
-    NSString *cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
+    NSString *cornerRadiusPrefChoice = @"Default";
+    NSString *cornerRadiusPrefCustom = @"";
+    cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
+    cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
 
     if(!enableTweak){
       return %orig(arg1);
@@ -159,8 +167,10 @@ double mydockHeight;
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
-      NSString *posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
+      NSString *posHeaderViewPrefChoice = @"Default";
+      NSString *posHeaderViewPrefH = @"";
+      posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
+      posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
 
       if(enableTweak){
         if ([posHeaderViewPrefChoice isEqualToString:@"Default"]){
@@ -190,9 +200,12 @@ double mydockHeight;
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
-      NSString *posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
-      NSString *posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
+      NSString *posCollectionViewPrefChoice = @"Default";
+      NSString *posCollectionViewPrefX = @"";
+      NSString *posCollectionViewPrefY = @"";
+      posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
+      posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
+      posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
 
       if(enableTweak){
         if ([posCollectionViewPrefChoice isEqualToString:@"Default"]){
