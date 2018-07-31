@@ -2,71 +2,33 @@
 #define preferencesPath [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.leroy.CustomCCPreferences.plist"]
 
 @interface SBControlCenterWindow : UIView
-  @property (nonatomic, assign, readwrite, setter=_setCornerRadius:) CGFloat _cornerRadius;
-  -(double)cornerRadius;
+	@property (assign,setter=_setCornerRadius:,nonatomic) double _cornerRadius;
 @end
 
-// @interface NCMaterialView : UIView {
-// 	unsigned long long _styleOptions;
-// 	_UIBackdropView* _backdropView;
-// 	UIView* _lightOverlayView;
-// 	UIView* _whiteOverlayView;
-// 	UIView* _cutoutOverlayView;
-// 	NCMaterialSettings* _settings;
-// }
-// @property (assign,nonatomic) double grayscaleValue;
-// @property (assign,nonatomic) double cornerRadius;
-// -(void)setCornerRadius:(double)arg1 ;
-// -(double)cornerRadius;
-// -(double)_continuousCornerRadius;
-// -(void)_setContinuousCornerRadius:(double)arg1 ;
-// -(void)settings:(id)arg1 changedValueForKey:(id)arg2 ;
-// -(void)_configureIfNecessary;
-// -(void)_configureBackdropViewIfNecessary;
-// -(void)_setSubviewsContinuousCornerRadius:(double)arg1 ;
-// -(double)grayscaleValue;
-// -(double)_subviewsContinuousCornerRadius;
-// @end
+double mydockHeight;
+
+//get dockHeight
+@interface SBDockView
+	@property (nonatomic,readonly) double dockHeight;
+@end
+
+%hook SBDockView
+  -(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
+    mydockHeight = self.dockHeight;
+    NSLog(@"**** mydockHeight: %f", mydockHeight);
+    return %orig(arg1, arg2);
+  }
+%end
 
 %hook SBControlCenterWindow
 
-  -(double)cornerRadius {
-    return 25;
-  }
-
-  // @property (assign,setter=_setCornerRadius:,nonatomic) CGFloat _cornerRadius;
-  //
-  // -(void)_setCornerRadius:(CGFloat)arg1 {
-  //   CGFloat myRadius = arg1;
-  //   myRadius = 25;
-  //   %orig(myRadius);
-  // }
-
-  // -(void)_setCornerRadius:(CGFloat)arg1 {
-  //   %orig(20);
-  // }
-
-//   - (void)layoutSubviews {
-//   	//[super layoutSubviews];
-//   	CGFloat cornerRadius = 20;
-//   	[layoutSubviews _setCornerRadius:cornerRadius];
-// }
-
-  // - (CGFloat)_cornerRadius {
-  //   return self.bounds.size.width/2;
-  // }
-  //
-  // - (void)_setCornerRadius:(CGFloat)cornerRadius {
-  // 	_highlightStateBackgroundView._cornerRadius = cornerRadius;
-  // 	_normalStateBackgroundView.backdropView.layer.cornerRadius = cornerRadius;
-  // }
 
   -(void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)arg1 {
       double myAlpha = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
       NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
-      NSString *alphaViewPref = [preferences objectForKey:@"alphaViewPref"];
+      NSString *alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
 
       if(!enableTweak){
         return %orig(arg1);
@@ -78,10 +40,10 @@
         } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
           myAlpha = 25;
         } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
-          if ([alphaViewPref isEqualToString:@""]) {
+          if ([alphaViewPrefCustom isEqualToString:@""]) {
             myAlpha = 100;
           } else {
-            myAlpha = [alphaViewPref doubleValue];
+            myAlpha = [alphaViewPrefCustom doubleValue];
           }
         }
         %orig(myAlpha/100);
@@ -90,7 +52,7 @@
   }
 
   -(void)setFrame:(CGRect)arg1 {
-
+    NSLog(@"**** mydockHeight1: %f", mydockHeight);
     CGRect newFrame = arg1;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
@@ -98,12 +60,18 @@
 
     NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
     bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
+
+    //CC pos
     NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
     NSString *posPrefX = [preferences objectForKey:@"posPrefX"];
     NSString *posPrefY = [preferences objectForKey:@"posPrefY"];
+    //CC size
     NSString *sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
     NSString *sizePrefW = [preferences objectForKey:@"sizePrefW"];
     NSString *sizePrefH = [preferences objectForKey:@"sizePrefH"];
+    //CC cornerRadius
+    NSString *cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
+    NSString *cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
 
     if(!enableTweak){
       return %orig(arg1);
@@ -115,7 +83,17 @@
       } else if ([posPrefChoice isEqualToString:@"Top"]) {
         newFrame.origin.y = 0;
       } else if ([posPrefChoice isEqualToString:@"Above Dock"]) {
-        newFrame.origin.y = 245;
+        if(mydockHeight == 0){
+          mydockHeight = 93;
+        }
+        double posAboveDock = screenHeight - mydockHeight;
+        if ([sizePrefChoice isEqualToString:@"Half"]){
+          newFrame.origin.y = posAboveDock - (screenHeight/2);
+        } else if ([sizePrefChoice isEqualToString:@"Custom"]) {
+          newFrame.origin.y = posAboveDock - [sizePrefH doubleValue];
+        } else {
+          newFrame.origin.y = posAboveDock;
+        }
       } else if ([posPrefChoice isEqualToString:@"Custom"]) {
         if ([posPrefX isEqualToString:@""]) {
           newFrame.origin.x = 0;
@@ -154,6 +132,22 @@
       }
 
       %orig(newFrame);
+
+      //setCornerRadius
+      if ([cornerRadiusPrefChoice isEqualToString:@"Default"]) {
+        self._cornerRadius = 0;
+      } else if ([cornerRadiusPrefChoice isEqualToString:@"25"]) {
+        self._cornerRadius = 25;
+      } else if ([cornerRadiusPrefChoice isEqualToString:@"50"]) {
+        self._cornerRadius = 50;
+      } else if ([cornerRadiusPrefChoice isEqualToString:@"Custom"]) {
+        if ([cornerRadiusPrefCustom isEqualToString:@""]) {
+          self._cornerRadius = 0;
+        } else {
+          self._cornerRadius = [cornerRadiusPrefCustom doubleValue];
+        }
+      }
+
     }
   }
 

@@ -171,6 +171,23 @@
 		[self presentViewController:alert animated:YES completion:nil];
 	}
 
+	-(void)showMonero {
+		UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+		pasteboard.string = @"42jBMo7NpyYUoPU3qdu7x6cntT3ez2da5TxKTwZVX9eZfwBA6XzeQEFcTxBukNUYyaGtgvdKtLyz72udsnRo3hFhLYPo37L";
+		UIAlertController * alert = [UIAlertController
+                alertControllerWithTitle:@"CustomCC: INFO"
+                                 message:@"My Monero address has been copied to your clipboard, all you have to do is paste it. Thank you for your donation! :)"
+                          preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertAction* okButton = [UIAlertAction
+                    actionWithTitle:@"OK"
+                              style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {
+                                //
+                            }];
+		[alert addAction:okButton];
+		[self presentViewController:alert animated:YES completion:nil];
+	}
+
 	-(void)showPayPal {
 	    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YFSWZBQM8V3C8"] options:@{} completionHandler:nil];
 	}

@@ -24,6 +24,7 @@
 			<key>label</key>
 			<string>Enable tweak</string>
 		</dict>
+		<!-- CCPos start -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -66,7 +67,7 @@
 			<key>alignment</key>
 			<string>5</string>
 			<key>default</key>
-			<string>Midpoint</string>
+			<string>Bottom</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -104,6 +105,8 @@
 			<key>label</key>
 			<string>Custom 'x' value:</string>
 		</dict>
+		<!-- CCPos end -->
+		<!-- CCsize start -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -178,6 +181,7 @@
 			<key>label</key>
 			<string>Custom 'width' value:</string>
 		</dict>
+		<!-- CCsize end -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -382,10 +386,69 @@
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
-			<string>alphaViewPref</string>
+			<string>alphaViewPrefCustom</string>
 			<key>label</key>
 			<string>Custom 'alpha' value:</string>
 		</dict>
+		<!-- cornerRadius start -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Choose the corner radius of the Control Center. For custom values, select 'Custom' above and use the input fields below.</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>cornerRadiusPrefChoice</string>
+			<key>validValues</key>
+			<array>
+				<string>Default</string>
+				<string>25</string>
+				<string>50</string>
+				<string>Custom</string>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>Default</string>
+				<string>25</string>
+				<string>50</string>
+				<string>Custom</string>
+			</array>
+			<key>alignment</key>
+			<string>4</string>
+			<key>default</key>
+			<string>Default</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>corner radius</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>cornerRadiusPrefCustom</string>
+			<key>label</key>
+			<string>Custom 'corner radius' value:</string>
+		</dict>
+		<!-- cornerRadius end -->
+		<!-- actions start -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -408,6 +471,8 @@
 			<key>action</key>
 			<string>respring</string>
 		</dict>
+		<!-- actions end -->
+		<!-- infos start -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -426,11 +491,21 @@
 		</dict>
 		<dict>
 			<key>icon</key>
+			<string>monero.png</string>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Donate via Monero 🐸</string>
+			<key>action</key>
+			<string>showMonero</string>
+		</dict>
+		<dict>
+			<key>icon</key>
 			<string>bitcoin.png</string>
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>label</key>
-			<string>Donate via Bitcons :)</string>
+			<string>Donate via Bitcons </string>
 			<key>action</key>
 			<string>showBitcoin</string>
 		</dict>
@@ -454,6 +529,7 @@
 			<key>action</key>
 			<string>showSourceCode</string>
 		</dict>
+		<!-- infos end -->
 	</array>
 	<key>title</key>
 	<string>CustomCC</string>
