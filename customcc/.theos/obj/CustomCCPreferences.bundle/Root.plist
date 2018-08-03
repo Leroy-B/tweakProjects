@@ -45,7 +45,7 @@
 			<key>cell</key>
 			<string>PSSegmentCell</string>
 			<key>default</key>
-			<string></string>
+			<string>Default</string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
@@ -68,8 +68,6 @@
 			</array>
 			<key>alignment</key>
 			<string>5</string>
-			<key>default</key>
-			<string>Default</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -129,7 +127,7 @@
 			<key>cell</key>
 			<string>PSSegmentCell</string>
 			<key>default</key>
-			<string></string>
+			<string>Default</string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
@@ -148,14 +146,12 @@
 			</array>
 			<key>alignment</key>
 			<string>3</string>
-			<key>default</key>
-			<string>Default</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>If you're not sure about the default values of your device, use the button below!</string>
+			<string>If you're not sure about the default values of your device, use the button in the ACTIONS section below!</string>
 		</dict>
 		<dict>
 			<key>PostNotification</key>
@@ -190,6 +186,80 @@
 			<string>Custom 'width' value:</string>
 		</dict>
 		<!-- CCsize end -->
+		<!-- CCscale start -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Choose the scale of the Control Center. For custom values, select 'Custom' above and use the input fields below.</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>key</key>
+			<string>scaleCCPrefChoice</string>
+			<key>default</key>
+			<string>Default</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>alignment</key>
+			<string>4</string>
+			<key>validValues</key>
+			<array>
+				<string>Default</string>
+				<string>75</string>
+				<string>50</string>
+				<string>Custom</string>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>Default</string>
+				<string>75</string>
+				<string>50</string>
+				<string>Custom</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>These custom values are on percent(%)!</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>height</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>scaleCCPrefH</string>
+			<key>label</key>
+			<string>Custom 'height' value:</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>width</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>scaleCCPrefW</string>
+			<key>label</key>
+			<string>Custom 'width' value:</string>
+		</dict>
+		<!-- CCscale end -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -209,12 +279,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSSegmentCell</string>
-			<key>default</key>
-			<string></string>
-			<key>defaults</key>
-			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
 			<string>posCollectionViewPrefChoice</string>
+			<key>default</key>
+			<string>Default</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>alignment</key>
+			<string>4</string>
 			<key>validValues</key>
 			<array>
 				<string>Default</string>
@@ -229,10 +301,6 @@
 				<string>Bottom</string>
 				<string>Custom</string>
 			</array>
-			<key>alignment</key>
-			<string>4</string>
-			<key>default</key>
-			<string>Default</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -243,14 +311,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSEditTextCell</string>
+			<key>key</key>
+			<string>posCollectionViewPrefY</string>
 			<key>placeholder</key>
 			<string>y</string>
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
-			<key>key</key>
-			<string>posCollectionViewPrefY</string>
 			<key>label</key>
 			<string>Custom collection 'y' value:</string>
 		</dict>
@@ -259,14 +327,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSEditTextCell</string>
+			<key>key</key>
+			<string>posCollectionViewPrefX</string>
 			<key>placeholder</key>
 			<string>x</string>
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
-			<key>key</key>
-			<string>posCollectionViewPrefX</string>
 			<key>label</key>
 			<string>Custom collection 'x' value:</string>
 		</dict>
@@ -282,19 +350,21 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Choose the height of the header view in the Control Center, this is the section where the little downwards arrow is located. For custom values, select 'Custom' above and use the input fields below.</string>
+			<string>Choose the size of the header view in the Control Center, this is the section where the little downwards arrow is located. For custom values, select 'Custom' above and use the input fields below.</string>
 		</dict>
 		<dict>
 			<key>PostNotification</key>
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSSegmentCell</string>
-			<key>default</key>
-			<string></string>
-			<key>defaults</key>
-			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
 			<string>posHeaderPrefChoice</string>
+			<key>default</key>
+			<string>Default</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>alignment</key>
+			<string>4</string>
 			<key>validValues</key>
 			<array>
 				<string>Default</string>
@@ -309,10 +379,6 @@
 				<string>Quarter</string>
 				<string>Custom</string>
 			</array>
-			<key>alignment</key>
-			<string>4</string>
-			<key>default</key>
-			<string>Default</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -323,17 +389,49 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSEditTextCell</string>
+			<key>key</key>
+			<string>posHeaderViewPrefH</string>
 			<key>placeholder</key>
 			<string>height</string>
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
-			<key>key</key>
-			<string>posHeaderViewPrefH</string>
 			<key>label</key>
 			<string>Custom header 'height' value:</string>
 		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>key</key>
+			<string>posHeaderViewPrefW</string>
+			<key>placeholder</key>
+			<string>width</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>label</key>
+			<string>Custom header 'width' value:</string>
+		</dict>
+		<!-- CCHeader hide start -->
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>hideHeaderPref</string>
+			<key>label</key>
+			<string>Hide Control Center Graber Area</string>
+		</dict>
+		<!-- CCHeader hide start -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -353,12 +451,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSSegmentCell</string>
-			<key>default</key>
-			<string></string>
-			<key>defaults</key>
-			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
 			<string>alphaViewPrefChoice</string>
+			<key>default</key>
+			<string>Default</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>alignment</key>
+			<string>4</string>
 			<key>validValues</key>
 			<array>
 				<string>Default</string>
@@ -373,10 +473,6 @@
 				<string>25</string>
 				<string>Custom</string>
 			</array>
-			<key>alignment</key>
-			<string>4</string>
-			<key>default</key>
-			<string>Default</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -387,14 +483,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSEditTextCell</string>
+			<key>key</key>
+			<string>alphaViewPrefCustom</string>
 			<key>placeholder</key>
 			<string>alpha</string>
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
-			<key>key</key>
-			<string>alphaViewPrefCustom</string>
 			<key>label</key>
 			<string>Custom 'alpha' value:</string>
 		</dict>
@@ -410,12 +506,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSSegmentCell</string>
-			<key>default</key>
-			<string></string>
-			<key>defaults</key>
-			<string>com.leroy.CustomCCPreferences</string>
 			<key>key</key>
 			<string>cornerRadiusPrefChoice</string>
+			<key>default</key>
+			<string>Default</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>alignment</key>
+			<string>4</string>
 			<key>validValues</key>
 			<array>
 				<string>Default</string>
@@ -430,10 +528,6 @@
 				<string>50</string>
 				<string>Custom</string>
 			</array>
-			<key>alignment</key>
-			<string>4</string>
-			<key>default</key>
-			<string>Default</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -444,14 +538,14 @@
 			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
 			<key>cell</key>
 			<string>PSEditTextCell</string>
+			<key>key</key>
+			<string>cornerRadiusPrefCustom</string>
 			<key>placeholder</key>
 			<string>corner radius</string>
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
 			<string>com.leroy.CustomCCPreferences</string>
-			<key>key</key>
-			<string>cornerRadiusPrefCustom</string>
 			<key>label</key>
 			<string>Custom 'corner radius' value:</string>
 		</dict>

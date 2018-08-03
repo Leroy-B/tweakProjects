@@ -2,6 +2,37 @@
 #include <spawn.h>
 #include <signal.h>
 
+@implementation callMSG
+- (void)showAlert:(NSString *)Title message:(NSString *)msg actionTitel:(NSString *)action {
+	// UIWindow* window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+	// window.rootViewController = [UIViewController new];
+	// window.windowLevel = UIWindowLevelAlert + 1;
+	//
+	// UIAlertController* alertCtrl = [UIAlertController alertControllerWithTitle:Title message:msg preferredStyle:UIAlertControllerStyleAlert];
+	//
+	// [alertCtrl addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",@"Generic confirm") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	//     window.hidden = YES;
+	// }]];
+	//
+	// [window makeKeyAndVisible];
+	// [window.rootViewController presentViewController:alertCtrl animated:YES completion:nil];
+	UIAlertController * alert = [UIAlertController
+							alertControllerWithTitle:Title
+															 message:msg
+												preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction* okButton = [UIAlertAction
+									actionWithTitle:action
+														style:UIAlertActionStyleDefault
+													handler:^(UIAlertAction * action) {
+																//
+													}];
+	[alert addAction:okButton];
+	//[[UIApplication sharedApplication].keyWindow.rootViewController.presentedViewController presentViewController:alert animated:YES completion:^{}];
+	[[UIApplication sharedApplication].keyWindow.rootViewController.presentedViewController presentViewController:alert animated:YES completion:nil];
+}
+
+@end
+
 @implementation CustomCCRootListController
 
 	- (NSArray *)specifiers {
@@ -20,6 +51,8 @@
 
 	- (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
 
+		callMSG *myMSG = [[callMSG alloc]init];
+
     if ([[specifier properties][@"key"] isEqualToString:@"posPrefY"]) {
 
           NSScanner *scanner = [NSScanner scannerWithString:value];
@@ -27,18 +60,22 @@
           BOOL isNumber = [scanner scanFloat:&f] && [scanner isAtEnd];
 
           if (!isNumber && [value length]) {
-						UIAlertController * alert = [UIAlertController
-												alertControllerWithTitle:@"CustomCC: ERROR"
-																				 message:@"The value for your custom 'y position' has to be numeric!"
-																	preferredStyle:UIAlertControllerStyleAlert];
-						UIAlertAction* okButton = [UIAlertAction
-														actionWithTitle:@"OK"
-																			style:UIAlertActionStyleDefault
-																		handler:^(UIAlertAction * action) {
-					                                //
-					                          }];
-						[alert addAction:okButton];
-						[self presentViewController:alert animated:YES completion:nil];
+						NSString *myTitle = @"CustomCC: ERROR";
+						NSString *myTXT = @"The value for your custom 'y position' has to be numeric!";
+						NSString *myAction = @"OK";
+						[myMSG showAlert:myTitle message:myTXT actionTitel:myAction];
+						// UIAlertController * alert = [UIAlertController
+						// 						alertControllerWithTitle:@"CustomCC: ERROR"
+						// 														 message:@"The value for your custom 'y position' has to be numeric!"
+						// 											preferredStyle:UIAlertControllerStyleAlert];
+						// UIAlertAction* okButton = [UIAlertAction
+						// 								actionWithTitle:@"OK"
+						// 													style:UIAlertActionStyleDefault
+						// 												handler:^(UIAlertAction * action) {
+					  //                               //
+					  //                         }];
+						// [alert addAction:okButton];
+						// [self presentViewController:alert animated:YES completion:nil];
 						return;
           }
     }
@@ -196,7 +233,7 @@
 		CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
     double screenWidth = screenSize.width;
-		NSString *message = [NSString stringWithFormat:@"Your screen height is: '%.1f' and the width is: '%.1f'!", screenHeight, screenWidth];
+		NSString *message = [NSString stringWithFormat:@"Your screen height is: '%.1f' and the width is: '%.1f'!\nYour resolution is: '%.1f'x'%.1f'!", screenHeight, screenWidth, screenHeight*2, screenWidth*2];
 
 		UIAlertController * alert = [UIAlertController
                 alertControllerWithTitle:@"CustomCC: INFO"
