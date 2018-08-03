@@ -3,21 +3,9 @@
 
 @interface SBControlCenterWindow : UIView
 	@property (assign,setter=_setCornerRadius:,nonatomic) double _cornerRadius;
+  @property (nonatomic,assign,readwrite) CGAffineTransform transform;
 @end
 
-double mydockHeight;
-
-//get dockHeight
-@interface SBDockView
-	@property (nonatomic,readonly) double dockHeight;
-@end
-
-%hook SBDockView
-  -(id)initWithDockListView:(id)arg1 forSnapshot:(BOOL)arg2 {
-    mydockHeight = self.dockHeight;
-    return %orig(arg1, arg2);
-  }
-%end
 
 %hook SBControlCenterWindow
 
@@ -26,15 +14,13 @@ double mydockHeight;
       double myAlpha = 100;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *alphaViewPrefChoice = @"100";
-      NSString *alphaViewPrefCustom = @"";
-      alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
-      alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
+      NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
+      NSString *alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
 
       if(!enableTweak){
         return %orig(arg1);
       } else {
-        if ([alphaViewPrefChoice isEqualToString:@"100"]){
+        if ([alphaViewPrefChoice isEqualToString:@"Default"]){
           myAlpha = 100;
         } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
           myAlpha = 50;
@@ -62,39 +48,32 @@ double mydockHeight;
     bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
 
     //CC pos
-    NSString *posPrefChoice = @"Bottom";
-    NSString *posPrefX = @"";
-    NSString *posPrefY = @"";
-    posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
-    posPrefX = [preferences objectForKey:@"posPrefX"];
-    posPrefY = [preferences objectForKey:@"posPrefY"];
+    NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
+    NSString *posPrefX = [preferences objectForKey:@"posPrefX"];
+    NSString *posPrefY = [preferences objectForKey:@"posPrefY"];
     //CC size
-    NSString *sizePrefChoice = @"Half";
-    NSString *sizePrefW = @"";
-    NSString *sizePrefH = @"";
-    sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
-    sizePrefW = [preferences objectForKey:@"sizePrefW"];
-    sizePrefH = [preferences objectForKey:@"sizePrefH"];
+    NSString *sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
+    NSString *sizePrefW = [preferences objectForKey:@"sizePrefW"];
+    NSString *sizePrefH = [preferences objectForKey:@"sizePrefH"];
     //CC cornerRadius
-    NSString *cornerRadiusPrefChoice = @"Default";
-    NSString *cornerRadiusPrefCustom = @"";
-    cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
-    cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
+    NSString *cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
+    NSString *cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
+		//CC scale
+    NSString *scaleCCPrefChoice = [preferences objectForKey:@"scaleCCPrefChoice"];
+    NSString *scaleCCPrefH = [preferences objectForKey:@"scaleCCPrefH"];
+		NSString *scaleCCPrefW = [preferences objectForKey:@"scaleCCPrefW"];
 
     if(!enableTweak){
       return %orig(arg1);
     } else {
-      if ([posPrefChoice isEqualToString:@"Bottom"]){
+      if ([posPrefChoice isEqualToString:@"Default"]) {
+        newFrame.origin.y = 0;
+      } else if ([posPrefChoice isEqualToString:@"Bottom"]){
         newFrame.origin.y = screenHeight - newFrame.size.height;
       } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
         newFrame.origin.y = screenHeight/2;
-      } else if ([posPrefChoice isEqualToString:@"Top"]) {
-        newFrame.origin.y = 0;
       } else if ([posPrefChoice isEqualToString:@"Above Dock"]) {
-        if(mydockHeight == 0){
-          mydockHeight = 93;
-        }
-        double posAboveDock = screenHeight - mydockHeight;
+        double posAboveDock = screenHeight - 93;
         if ([sizePrefChoice isEqualToString:@"Half"]){
           newFrame.origin.y = posAboveDock - (screenHeight/2);
         } else if ([sizePrefChoice isEqualToString:@"Custom"]) {
@@ -141,7 +120,7 @@ double mydockHeight;
 
       %orig(newFrame);
 
-      //setCornerRadius
+      //setCornerRadius start
       if ([cornerRadiusPrefChoice isEqualToString:@"Default"]) {
         self._cornerRadius = 0;
       } else if ([cornerRadiusPrefChoice isEqualToString:@"25"]) {
@@ -155,6 +134,68 @@ double mydockHeight;
           self._cornerRadius = [cornerRadiusPrefCustom doubleValue];
         }
       }
+			//setCornerRadius end
+
+			//setScaleCC start
+			double scaleH, scaleW;
+			if ([scaleCCPrefChoice isEqualToString:@""]) {
+				NSLog(@"ERROR: scaleCCPrefChoice is empty!");
+			} else {
+				NSArray *items = @[@"Default", @"75", @"50", @"Custom"];
+				int item = [items indexOfObject:scaleCCPrefChoice];
+				switch (item) {
+					case 0:
+						scaleH = scaleW = 1;
+						//self.transform = CGAffineTransformMakeScale(1, 1);
+						break;
+					case 1:
+						scaleH = scaleW = 0.75;
+						//self.transform = CGAffineTransformMakeScale(0.75, 0.75);
+						break;
+					case 2:
+						scaleH = scaleW = 0.5;
+						//self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+						break;
+					case 3:
+						if (([scaleCCPrefH isEqualToString:@""]) && ([scaleCCPrefH isEqualToString:@""])) {
+							scaleH = scaleW = 1;
+							//self.transform = CGAffineTransformMakeScale(1, 1);
+						} else if ([scaleCCPrefH isEqualToString:@""]) {
+							scaleH = 1;
+							scaleW = [scaleCCPrefW doubleValue];
+							//self.transform = CGAffineTransformMakeScale([scaleCCPrefW doubleValue], 1);
+						} else {
+							scaleH = [scaleCCPrefH doubleValue];
+							scaleW = 1;
+							//self.transform = CGAffineTransformMakeScale(1, [scaleCCPrefH doubleValue]);
+						}
+						break;
+					default:
+						NSLog(@"ERROR: scaleCCPrefChoice is default!");
+						scaleH = scaleW = 1;
+						break;
+				}
+				self.transform = CGAffineTransformMakeScale(scaleW, scaleH);
+
+
+				// if ([scaleCCPrefChoice isEqualToString:@"Default"]) {
+				// 	self.transform = CGAffineTransformMakeScale(1, 1);
+				// } else if ([scaleCCPrefChoice isEqualToString:@"75"]) {
+				// 	self.transform = CGAffineTransformMakeScale(0.75, 0.75);
+				// } else if ([scaleCCPrefChoice isEqualToString:@"50"]) {
+				// 	self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+				// } else if ([scaleCCPrefChoice isEqualToString:@"Custom"]) {
+				// 	if (([scaleCCPrefH isEqualToString:@""]) && ([scaleCCPrefH isEqualToString:@""])) {
+				// 		self.transform = CGAffineTransformMakeScale(1, 1);
+				// 	} else if ([scaleCCPrefH isEqualToString:@""]) {
+				// 		self.transform = CGAffineTransformMakeScale([scaleCCPrefW doubleValue], 1);
+				// 	} else {
+				// 		self.transform = CGAffineTransformMakeScale(1, [scaleCCPrefH doubleValue]);
+				// 	}
+				// }
+
+			}
+			//setScaleCC end
 
     }
   }
@@ -167,10 +208,8 @@ double mydockHeight;
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posHeaderViewPrefChoice = @"Default";
-      NSString *posHeaderViewPrefH = @"";
-      posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
-      posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
+      NSString *posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
+      NSString *posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
 
       if(enableTweak){
         if ([posHeaderViewPrefChoice isEqualToString:@"Default"]){
@@ -200,12 +239,9 @@ double mydockHeight;
       CGRect newFrame = arg1;
       NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
       bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-      NSString *posCollectionViewPrefChoice = @"Default";
-      NSString *posCollectionViewPrefX = @"";
-      NSString *posCollectionViewPrefY = @"";
-      posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
-      posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
-      posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
+      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
+      NSString *posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
+      NSString *posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
 
       if(enableTweak){
         if ([posCollectionViewPrefChoice isEqualToString:@"Default"]){
