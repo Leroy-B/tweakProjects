@@ -5,14 +5,12 @@ TARGET = iphone:11.2:11.0
 
 ARCHS = arm64
 # ARCHS = x86_64
-DEBUG = 0
 
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = CustomCC
 CustomCC_FILES = Tweak.xm
-#CustomCC_EXTRA_FRAMEWORKS += Cephei
-#CustomCC_EXTRA_FRAMEWORKS += CepheiPrefs
+CustomCC_LIBRARIES = colorpicker
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

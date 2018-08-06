@@ -2,6 +2,3 @@
 
 @interface CustomCCRootListController : PSListController
 @end
-
-@interface callMSG : NSObject 
-@end
