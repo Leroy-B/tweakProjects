@@ -135,15 +135,15 @@
 						return;
           }
     }
-	NSString *path = [NSString stringWithFormat:@"/private/var/mobile/Library/Preferences/%@.plist", [specifier properties][@"defaults"]];
-	NSMutableDictionary *settings = [NSMutableDictionary dictionary];
-	[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];
-	[settings setObject:value forKey: [specifier properties][@"key"]];
-	[settings writeToFile:path atomically:YES];
-	CFStringRef notificationName = (CFStringRef)[specifier properties][@"PostNotification"];
-	if (notificationName) {
-		CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
-	}
+		NSString *path = [NSString stringWithFormat:@"/private/var/mobile/Library/Preferences/%@.plist", [specifier properties][@"defaults"]];
+		NSMutableDictionary *settings = [NSMutableDictionary dictionary];
+		[settings addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:path]];
+		[settings setObject:value forKey: [specifier properties][@"key"]];
+		[settings writeToFile:path atomically:YES];
+		CFStringRef notificationName = (CFStringRef)[specifier properties][@"PostNotification"];
+		if (notificationName) {
+			CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
+		}
 }
 
 	- (void)showTwitter {

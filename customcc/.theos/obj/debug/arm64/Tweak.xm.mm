@@ -9,9 +9,8 @@
 
 
 
-#import <UIKit/UIKit.h>
 #import "libcolorpicker.h"
-#define preferencesPath [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.leroy.CustomCCPreferences.plist"]
+
 
 @interface SBControlCenterWindow : UIView
 	@property (assign,setter=_setCornerRadius:,nonatomic) double _cornerRadius;
@@ -21,6 +20,7 @@
 @interface CCUIHeaderPocketView : UIView
   @property (nonatomic,assign,readwrite) CGAffineTransform transform;
 	@property (nonatomic,assign,readwrite) BOOL hidden;
+	@property (nonatomic,assign,readwrite) CGRect frame;
 @end
 
 @interface _MTBackdropView : SBControlCenterWindow
@@ -28,18 +28,85 @@
 	@property (nonatomic, copy, readwrite) UIColor *colorAddColor;
 @end
 
-@interface SpringBoard : FBSystemApp
-	-(void)_runControlCenterDismissTest;
-@end
-
-
-NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
-bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
-NSString *colorPrefCustom = [preferences objectForKey:@"colorPrefCustom"];
+static bool enableTweak = NO;
+static NSString *colorPrefCustom;
 UIColor *colorPrefCustomValue = LCPParseColorString(colorPrefCustom, @"#ff0000");
 
-NSString *backgroundBlurPrefChoice = [preferences objectForKey:@"backgroundBlurPrefChoice"];
-NSString *backgroundBlurPrefCustom = [preferences objectForKey:@"backgroundBlurPrefCustom"];
+static NSString *backgroundBlurPrefChoice;
+static NSString *backgroundBlurPrefCustom;
+
+static NSString *posPrefChoice;
+static NSString *posPrefX;
+static NSString *posPrefY;
+
+static NSString *sizePrefChoice;
+static NSString *sizePrefW;
+static NSString *sizePrefH;
+
+static NSString *cornerRadiusPrefChoice;
+static NSString *cornerRadiusPrefCustom;
+
+static NSString *scaleCCPrefChoice;
+static NSString *scaleCCPrefH;
+static NSString *scaleCCPrefW;
+
+static NSString *alphaViewPrefChoice;
+static NSString *alphaViewPrefCustom;
+
+static NSString *posHeaderViewPrefChoice;
+static NSString *posHeaderViewPrefH;
+static NSString *posHeaderViewPrefW;
+static bool hideHeaderPref = NO;
+
+static NSString *posCollectionViewPrefChoice;
+static NSString *posCollectionViewPrefX;
+static NSString *posCollectionViewPrefY;
+
+
+#define PLIST_PATH "/var/mobile/Library/Preferences/com.leroy.CustomCCPreferences.plist"
+#define boolValueForKey(key) [[[NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)] valueForKey:key] boolValue]
+#define valueForKey(key) [[NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)] valueForKey:key]
+
+static void loadPreferences() {
+    enableTweak = boolValueForKey(@"enableTweak");
+    colorPrefCustom = valueForKey(@"colorPrefCustom");
+
+		backgroundBlurPrefChoice = valueForKey(@"backgroundBlurPrefChoice");
+		backgroundBlurPrefCustom = valueForKey(@"backgroundBlurPrefCustom");
+
+		posPrefChoice = valueForKey(@"posPrefChoice");
+		posPrefX = valueForKey(@"posPrefX");
+		posPrefY = valueForKey(@"posPrefY");
+
+		sizePrefChoice = valueForKey(@"sizePrefChoice");
+		sizePrefW = valueForKey(@"sizePrefW");
+		sizePrefH = valueForKey(@"sizePrefH");
+
+		cornerRadiusPrefChoice = valueForKey(@"cornerRadiusPrefChoice");
+		cornerRadiusPrefCustom = valueForKey(@"cornerRadiusPrefCustom");
+
+		scaleCCPrefChoice = valueForKey(@"scaleCCPrefChoice");
+		scaleCCPrefH = valueForKey(@"scaleCCPrefH");
+		scaleCCPrefW = valueForKey(@"scaleCCPrefW");
+
+		alphaViewPrefChoice = valueForKey(@"alphaViewPrefChoice");
+		alphaViewPrefCustom = valueForKey(@"alphaViewPrefCustom");
+
+		posHeaderViewPrefChoice = valueForKey(@"posHeaderViewPrefChoice");
+		posHeaderViewPrefH = valueForKey(@"posHeaderViewPrefH");
+		posHeaderViewPrefW = valueForKey(@"posHeaderViewPrefW");
+		hideHeaderPref = boolValueForKey(@"hideHeaderPref");
+
+		posCollectionViewPrefChoice = valueForKey(@"posCollectionViewPrefChoice");
+		posCollectionViewPrefX = valueForKey(@"posCollectionViewPrefX");
+		posCollectionViewPrefY = valueForKey(@"posCollectionViewPrefY");
+}
+
+static void setValueForKey(id value, NSString *key) {
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)];
+    [dict setValue:value forKey:key];
+    [dict writeToFile:@(PLIST_PATH) atomically:YES];
+}
 
 
 #include <substrate.h>
@@ -62,13 +129,14 @@ NSString *backgroundBlurPrefCustom = [preferences objectForKey:@"backgroundBlurP
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class CCUIHeaderPocketView; @class SpringBoard; @class CCUIModuleCollectionView; @class SBControlCenterWindow; @class _MTBackdropView; 
-static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$viewDidLoad)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBControlCenterWindow$viewDidLoad(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBControlCenterWindow$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, UITapGestureRecognizer* ); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
-static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SpringBoard(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SpringBoard"); } return _klass; }
-#line 43 "Tweak.xm"
+@class SBControlCenterController; @class SpringBoard; @class CCUIHeaderPocketView; @class SBControlCenterWindow; @class _MTBackdropView; @class CCUIModuleCollectionView; 
+static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterController$dismissAnimated$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterController* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$_ungrouped$SBControlCenterController$dismissAnimated$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterController* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$_ungrouped$SpringBoard$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL, UITapGestureRecognizer* ); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
+
+#line 110 "Tweak.xm"
 
 
 	static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
+		loadPreferences();
 		if(!enableTweak){
 			_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews(self, _cmd);
 		} else {
@@ -78,6 +146,7 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 	}
 
 	static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
+		loadPreferences();
 		double myBlur = 30;
 		if(!enableTweak){
 			_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$(self, _cmd, arg1);
@@ -100,79 +169,83 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 	}
 
 
+@interface SBControlCenterController : NSObject
+@end
 
 
-	static void _logos_method$_ungrouped$SBControlCenterWindow$viewDidLoad(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
-		_logos_orig$_ungrouped$SBControlCenterWindow$viewDidLoad(self, _cmd);
-		UIView *redRectangle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-		[redRectangle setBackgroundColor:[UIColor redColor]];
-		[self addSubview:redRectangle];
-		UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:redRectangle action:@selector(handleTapGesture:)];
-		[self addGestureRecognizer:tap];
+	static void _logos_method$_ungrouped$SBControlCenterController$dismissAnimated$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, BOOL arg1) {
+		_logos_orig$_ungrouped$SBControlCenterController$dismissAnimated$(self, _cmd, arg1);
+		NSLog(@"CustomCC LOG: arg1 is : %s", arg1 ? "true" : "false");
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 	}
+
+
+
+@interface SpringBoard : UIViewController
+	-(void)_runControlCenterDismissTest;
+@end
+
+
 
 	
-	static void _logos_method$_ungrouped$SBControlCenterWindow$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UITapGestureRecognizer*  sender) {
-		HBLogDebug(@"-[<SBControlCenterWindow: %p> handleTapGesture:%@]", self, sender);
-		[[[_logos_static_class_lookup$SpringBoard() sharedApplication] _runControlCenterDismissTest];
+	static void _logos_method$_ungrouped$SpringBoard$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UITapGestureRecognizer*  sender) {
+		HBLogDebug(@"-[<SpringBoard: %p> handleTapGesture:%@]", self, sender);
+		
+		
+		
+		
+		
+		
+		
 	}
 
-  static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
-      double myAlpha = 100;
-      NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
-      NSString *alphaViewPrefCustom = [preferences objectForKey:@"alphaViewPref"];
 
-      if(!enableTweak){
-        _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, arg1);
-      } else {
-        if ([alphaViewPrefChoice isEqualToString:@"Default"]){
+
+
+
+  static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
+		loadPreferences();
+		double myAlpha = 100;
+
+    if(!enableTweak){
+      _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, arg1);
+    } else {
+      if ([alphaViewPrefChoice isEqualToString:@"Default"]) {
+        myAlpha = 100;
+      } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
+        myAlpha = 50;
+      } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
+        myAlpha = 25;
+      } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
+        if ([alphaViewPrefCustom isEqualToString:@""]) {
           myAlpha = 100;
-        } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
-          myAlpha = 50;
-        } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
-          myAlpha = 25;
-        } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
-          if ([alphaViewPrefCustom isEqualToString:@""]) {
-            myAlpha = 100;
-          } else {
-            myAlpha = [alphaViewPrefCustom doubleValue];
-          }
+        } else {
+          myAlpha = [alphaViewPrefCustom doubleValue];
         }
-        _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, myAlpha/100);
       }
+			setValueForKey(alphaViewPrefChoice, @"alphaViewPrefChoice");
+			setValueForKey(alphaViewPrefCustom, @"alphaViewPrefCustom");
+      _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, myAlpha/100);
+    }
 
   }
 
   static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1) {
+		loadPreferences();
     CGRect newFrame = arg1;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
     double screenWidth = screenSize.width;
-
-		
-		
-		
-		
-		
-		
-
-
-    
-    NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
-    NSString *posPrefX = [preferences objectForKey:@"posPrefX"];
-    NSString *posPrefY = [preferences objectForKey:@"posPrefY"];
-    
-    NSString *sizePrefChoice = [preferences objectForKey:@"sizePrefChoice"];
-    NSString *sizePrefW = [preferences objectForKey:@"sizePrefW"];
-    NSString *sizePrefH = [preferences objectForKey:@"sizePrefH"];
-    
-    NSString *cornerRadiusPrefChoice = [preferences objectForKey:@"cornerRadiusPrefChoice"];
-    NSString *cornerRadiusPrefCustom = [preferences objectForKey:@"cornerRadiusPrefCustom"];
-		
-    NSString *scaleCCPrefChoice = [preferences objectForKey:@"scaleCCPrefChoice"];
-    NSString *scaleCCPrefH = [preferences objectForKey:@"scaleCCPrefH"];
-		NSString *scaleCCPrefW = [preferences objectForKey:@"scaleCCPrefW"];
 
     if (!enableTweak) {
       return _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, arg1);
@@ -204,6 +277,9 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
           newFrame.origin.y = [posPrefY doubleValue];
         }
       }
+			setValueForKey(posPrefChoice, @"posPrefChoice");
+			setValueForKey(posPrefX, @"posPrefX");
+			setValueForKey(posPrefY, @"posPrefY");
 
       if ([sizePrefChoice isEqualToString:@"Full"]) {
         newFrame.origin.y = 0;
@@ -228,7 +304,9 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
       if ([posPrefChoice isEqualToString:@"Bottom"] && [sizePrefChoice isEqualToString:@"Custom"]) {
         newFrame.origin.y = screenHeight - [sizePrefH doubleValue];
       }
-
+			setValueForKey(sizePrefChoice, @"sizePrefChoice");
+			setValueForKey(sizePrefH, @"sizePrefH");
+			setValueForKey(sizePrefW, @"sizePrefW");
       _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, newFrame);
 
       
@@ -245,6 +323,8 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
           self._cornerRadius = [cornerRadiusPrefCustom doubleValue];
         }
       }
+			setValueForKey(cornerRadiusPrefChoice, @"cornerRadiusPrefChoice");
+			setValueForKey(cornerRadiusPrefCustom, @"cornerRadiusPrefCustom");
 			
 
 			
@@ -292,10 +372,12 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 						scaleH = scaleW = 1;
 						break;
 				}
+				setValueForKey(scaleCCPrefChoice, @"scaleCCPrefChoice");
+				setValueForKey(scaleCCPrefH, @"scaleCCPrefH");
+				setValueForKey(scaleCCPrefW, @"scaleCCPrefW");
 				self.transform = CGAffineTransformMakeScale(scaleW, scaleH);
 			}
 			
-
     }
   }
 
@@ -304,15 +386,12 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 
 
     static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1){
+			loadPreferences();
       CGRect newFrame = arg1;
 			CGSize screenSize = [UIScreen mainScreen].bounds.size;
 	    
 	    double screenWidth = screenSize.width;
 
-      NSString *posHeaderViewPrefChoice = [preferences objectForKey:@"posHeaderPrefChoice"];
-      NSString *posHeaderViewPrefH = [preferences objectForKey:@"posHeaderViewPrefH"];
-			NSString *posHeaderViewPrefW = [preferences objectForKey:@"posHeaderViewPrefW"];
-			NSString *hideHeaderPref = [preferences objectForKey:@"hideHeaderPref"];
 			double headerSizeH = 64;
 			double headerSizeW = screenWidth;
 
@@ -356,19 +435,6 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 									headerSizeW = [posHeaderViewPrefW doubleValue];
 								}
 							}
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					}
 					newFrame.size.height = headerSizeH;
 					newFrame.size.width = headerSizeW;
@@ -382,6 +448,10 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 				self.hidden = NO;
 				newFrame.size.height = headerSizeH;
 			}
+			setValueForKey(posHeaderViewPrefChoice, @"posHeaderViewPrefChoice");
+			setValueForKey(posHeaderViewPrefH, @"posHeaderViewPrefH");
+			setValueForKey(posHeaderViewPrefW, @"posHeaderViewPrefW");
+			
     }
 
 
@@ -389,12 +459,8 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 
 
     static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1){
+			loadPreferences();
       CGRect newFrame = arg1;
-      
-      
-      NSString *posCollectionViewPrefChoice = [preferences objectForKey:@"posCollectionViewPrefChoice"];
-      NSString *posCollectionViewPrefX = [preferences objectForKey:@"posCollectionViewPrefX"];
-      NSString *posCollectionViewPrefY = [preferences objectForKey:@"posCollectionViewPrefY"];
 
 			if (!enableTweak) {
 	      return _logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$(self, _cmd, arg1);
@@ -445,6 +511,9 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
 							posX = posY = 0;
 							break;
 					}
+					setValueForKey(posCollectionViewPrefChoice, @"posCollectionViewPrefChoice");
+					setValueForKey(posCollectionViewPrefX, @"posCollectionViewPrefX");
+					setValueForKey(posCollectionViewPrefY, @"posCollectionViewPrefY");
 					newFrame.origin.x = posX;
 					newFrame.origin.y = posY;
 					_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$(self, _cmd, newFrame);
@@ -454,6 +523,25 @@ static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _
     }
 
 
+
+static __attribute__((constructor)) void _logosLocalCtor_b145a852(int __unused argc, char __unused **argv, char __unused **envp) {
+
+	
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	loadPreferences();
+	
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
 static __attribute__((constructor)) void _logosLocalInit() {
-{Class _logos_class$_ungrouped$_MTBackdropView = objc_getClass("_MTBackdropView"); MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$_MTBackdropView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(setBlurRadius:), (IMP)&_logos_method$_ungrouped$_MTBackdropView$setBlurRadius$, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$);Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(viewDidLoad), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$viewDidLoad, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$viewDidLoad);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UITapGestureRecognizer* ), strlen(@encode(UITapGestureRecognizer* ))); i += strlen(@encode(UITapGestureRecognizer* )); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SBControlCenterWindow, @selector(handleTapGesture:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$handleTapGesture$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
-#line 431 "Tweak.xm"
+{Class _logos_class$_ungrouped$_MTBackdropView = objc_getClass("_MTBackdropView"); MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$_MTBackdropView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(setBlurRadius:), (IMP)&_logos_method$_ungrouped$_MTBackdropView$setBlurRadius$, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$);Class _logos_class$_ungrouped$SBControlCenterController = objc_getClass("SBControlCenterController"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterController, @selector(dismissAnimated:), (IMP)&_logos_method$_ungrouped$SBControlCenterController$dismissAnimated$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterController$dismissAnimated$);Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); { char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UITapGestureRecognizer* ), strlen(@encode(UITapGestureRecognizer* ))); i += strlen(@encode(UITapGestureRecognizer* )); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(handleTapGesture:), (IMP)&_logos_method$_ungrouped$SpringBoard$handleTapGesture$, _typeEncoding); }Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
+#line 519 "Tweak.xm"

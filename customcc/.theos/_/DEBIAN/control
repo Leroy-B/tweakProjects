@@ -1,9 +1,10 @@
 Package: com.leroy.customcc
 Name: CustomCC
 Depends: mobilesubstrate, firmware(>=11.0), preferenceloader, org.thebigboss.libcolorpicker
-Version: 0.2.4
 Architecture: iphoneos-arm
 Description: Customize you Control Center Page!
 Maintainer: LeroyB
 Author: LeroyB
 Section: Tweaks
+Version: 0.2.4-25+debug
+Installed-Size: 252
