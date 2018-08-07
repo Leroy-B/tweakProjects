@@ -27,6 +27,11 @@ TODO LIST:
 	@property (nonatomic, copy, readwrite) UIColor *colorAddColor;
 @end
 
+@interface SpringBoard : FBSystemApp
+	-(void)_runControlCenterDismissTest;
+@end
+
+
 NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
 bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
 NSString *colorPrefCustom = [preferences objectForKey:@"colorPrefCustom"];
@@ -71,6 +76,22 @@ NSString *backgroundBlurPrefCustom = [preferences objectForKey:@"backgroundBlurP
 
 %hook SBControlCenterWindow
 
+	-(void)viewDidLoad {
+		%orig;
+		UIView *redRectangle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+		[redRectangle setBackgroundColor:[UIColor redColor]];
+		[self addSubview:redRectangle];
+		UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:redRectangle action:@selector(handleTapGesture:)];
+		[self addGestureRecognizer:tap];
+
+	}
+
+	%new
+	-(void)handleTapGesture:(UITapGestureRecognizer* )sender {
+		%log;
+		[[[%c(SpringBoard) sharedApplication] _runControlCenterDismissTest];
+	}
+
   -(void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)arg1 {
       double myAlpha = 100;
       NSString *alphaViewPrefChoice = [preferences objectForKey:@"alphaViewPrefChoice"];
@@ -102,6 +123,14 @@ NSString *backgroundBlurPrefCustom = [preferences objectForKey:@"backgroundBlurP
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
     double screenWidth = screenSize.width;
+
+		//UIGestureRecognizer* rec = [[UIGestureRecognizer alloc] initWithTarget:redRectangle action:@selector(touchChangedWithGestureRecognizer:)];
+		// set options for this recognizer.
+		//[view addGestureRecognizer:rec];
+		//[rec release];
+		//[redRectangle addGestureRecognizer:UITapGestureRecognizer];
+		//[[%c(SpringBoard) sharedApplication] _runControlCenterDismissTest];
+
 
     //CC pos
     NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];

@@ -28,6 +28,11 @@
 	@property (nonatomic, copy, readwrite) UIColor *colorAddColor;
 @end
 
+@interface SpringBoard : FBSystemApp
+	-(void)_runControlCenterDismissTest;
+@end
+
+
 NSMutableDictionary *preferences = [[NSMutableDictionary alloc] initWithContentsOfFile:preferencesPath];
 bool enableTweak = [[preferences objectForKey:@"enableTweak"] boolValue];
 NSString *colorPrefCustom = [preferences objectForKey:@"colorPrefCustom"];
@@ -57,18 +62,17 @@ NSString *backgroundBlurPrefCustom = [preferences objectForKey:@"backgroundBlurP
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class CCUIModuleCollectionView; @class CCUIHeaderPocketView; @class SBControlCenterWindow; @class _MTBackdropView; 
-static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
-
-#line 38 "Tweak.xm"
+@class CCUIHeaderPocketView; @class SpringBoard; @class CCUIModuleCollectionView; @class SBControlCenterWindow; @class _MTBackdropView; 
+static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$viewDidLoad)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBControlCenterWindow$viewDidLoad(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBControlCenterWindow$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, UITapGestureRecognizer* ); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
+static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SpringBoard(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SpringBoard"); } return _klass; }
+#line 43 "Tweak.xm"
 
 
 	static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
 		if(!enableTweak){
 			_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews(self, _cmd);
 		} else {
-			self.colorAddColor = LCPParseColorString(colorPrefCustom, @"#ff0000");
-			
+			self.colorAddColor = LCPParseColorString(colorPrefCustom, nil);
 			_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews(self, _cmd);
 		}
 	}
@@ -97,6 +101,22 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 
 
 
+
+	static void _logos_method$_ungrouped$SBControlCenterWindow$viewDidLoad(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd) {
+		_logos_orig$_ungrouped$SBControlCenterWindow$viewDidLoad(self, _cmd);
+		UIView *redRectangle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+		[redRectangle setBackgroundColor:[UIColor redColor]];
+		[self addSubview:redRectangle];
+		UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:redRectangle action:@selector(handleTapGesture:)];
+		[self addGestureRecognizer:tap];
+
+	}
+
+	
+	static void _logos_method$_ungrouped$SBControlCenterWindow$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, UITapGestureRecognizer*  sender) {
+		HBLogDebug(@"-[<SBControlCenterWindow: %p> handleTapGesture:%@]", self, sender);
+		[[[_logos_static_class_lookup$SpringBoard() sharedApplication] _runControlCenterDismissTest];
+	}
 
   static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
       double myAlpha = 100;
@@ -129,6 +149,14 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     double screenHeight = screenSize.height;
     double screenWidth = screenSize.width;
+
+		
+		
+		
+		
+		
+		
+
 
     
     NSString *posPrefChoice = [preferences objectForKey:@"posPrefChoice"];
@@ -427,5 +455,5 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 
 
 static __attribute__((constructor)) void _logosLocalInit() {
-{Class _logos_class$_ungrouped$_MTBackdropView = objc_getClass("_MTBackdropView"); MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$_MTBackdropView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(setBlurRadius:), (IMP)&_logos_method$_ungrouped$_MTBackdropView$setBlurRadius$, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$);Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
-#line 403 "Tweak.xm"
+{Class _logos_class$_ungrouped$_MTBackdropView = objc_getClass("_MTBackdropView"); MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$_MTBackdropView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(setBlurRadius:), (IMP)&_logos_method$_ungrouped$_MTBackdropView$setBlurRadius$, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$);Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(viewDidLoad), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$viewDidLoad, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$viewDidLoad);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UITapGestureRecognizer* ), strlen(@encode(UITapGestureRecognizer* ))); i += strlen(@encode(UITapGestureRecognizer* )); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SBControlCenterWindow, @selector(handleTapGesture:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$handleTapGesture$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
+#line 431 "Tweak.xm"
