@@ -1,11 +1,11 @@
 /*
-TODO LIST:
-	- dismiss keyboard on tap anywhere else
+TODO:
+	- dismiss keyboard on tap anywhere else ([[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil]; // Dismisses keyb)
 	-	(hard) draw cc like snapper2
 	- does landscape work yet?
-	- hide header view Altogether (u/shotnine)
+	- <done> hide header view Altogether (u/shotnine)
 	- hide view colletion earlier than normal on dismiss
-	- dim background toggles normal
+	- dim background; toggles normal
 */
 
 #import "libcolorpicker.h"
@@ -121,24 +121,49 @@ static void setValueForKey(id value, NSString *key) {
 
 	-(void)setBlurRadius:(double)arg1 {
 		loadPreferences();
-		double myBlur = 30;
 		if(!enableTweak){
-			%orig(arg1);
-		} else {
-			if ([backgroundBlurPrefChoice isEqualToString:@"Default"]){
-				myBlur = 30;
-			} else if ([backgroundBlurPrefChoice isEqualToString:@"25"]) {
-				myBlur = 15;
-			} else if ([backgroundBlurPrefChoice isEqualToString:@"none"]) {
-				myBlur = 0;
-			} else if ([backgroundBlurPrefChoice isEqualToString:@"Custom"]) {
-				if ([backgroundBlurPrefCustom isEqualToString:@""]) {
-					myBlur = 30;
-				} else {
-					myBlur = [backgroundBlurPrefCustom doubleValue];
+      %orig(arg1);
+    } else {
+			//blur <start>
+			double customBlur = 30;
+			if ([backgroundBlurPrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: backgroundBlurPrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+																		 @"25" : @1,
+																	 @"none" : @2,
+																 @"Custom" : @3,
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:backgroundBlurPrefChoice];
+				NSLog(@"CustomCC LOG: backgroundBlurPrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0://default
+						customBlur = 30;
+						break;
+					case 1://25
+						customBlur = 7.5;
+						break;
+					case 2://none
+						customBlur = 0;
+						break;
+					case 3://custom
+						if ([backgroundBlurPrefCustom isEqualToString:@""]) {
+							customBlur = 30;
+						} else {
+							customBlur = [backgroundBlurPrefCustom doubleValue];
+						}
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: backgroundBlurPrefChoice switch is default!");
+						customBlur = 30;
+						break;
 				}
+				%orig(customBlur);
+				setValueForKey(backgroundBlurPrefChoice, @"backgroundBlurPrefChoice");
+				setValueForKey(backgroundBlurPrefCustom, @"backgroundBlurPrefCustom");
 			}
-			%orig(myBlur);
+			//blur <end>
 		}
 	}
 %end
@@ -189,29 +214,52 @@ static void setValueForKey(id value, NSString *key) {
 
   -(void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)arg1 {
 		loadPreferences();
-		double myAlpha = 100;
-
-    if(!enableTweak){
-      %orig(arg1);
-    } else {
-      if ([alphaViewPrefChoice isEqualToString:@"Default"]) {
-        myAlpha = 100;
-      } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
-        myAlpha = 50;
-      } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
-        myAlpha = 25;
-      } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
-        if ([alphaViewPrefCustom isEqualToString:@""]) {
-          myAlpha = 100;
-        } else {
-          myAlpha = [alphaViewPrefCustom doubleValue];
-        }
-      }
-			setValueForKey(alphaViewPrefChoice, @"alphaViewPrefChoice");
-			setValueForKey(alphaViewPrefCustom, @"alphaViewPrefCustom");
-      %orig(myAlpha/100);
-    }
-
+		//if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation ] != UIDeviceOrientationLandscapeRight) {
+			if(!enableTweak){
+	      %orig(arg1);
+	    } else {
+				//Alpha <start>
+				double customAlpha = 100;
+				if ([alphaViewPrefChoice isEqualToString:@""]) {
+					NSLog(@"CustomCC ERROR: alphaViewPrefChoice is empty!");
+				} else {
+					NSDictionary *cases = @{@"Default" : @0,
+																			 @"50" : @1,
+																			 @"25" : @2,
+																	 @"Custom" : @3,
+																 };
+					NSNumber *value = 0;
+					value = [cases objectForKey:alphaViewPrefChoice];
+					NSLog(@"CustomCC LOG: alphaViewPrefChoice value is: %@", value);
+					switch ([value intValue]) {
+						case 0://default
+							customAlpha = 100;
+							break;
+						case 1://50
+							customAlpha = 50;
+							break;
+						case 2://25
+							customAlpha = 25;
+							break;
+						case 3://custom
+							if ([alphaViewPrefCustom isEqualToString:@""]) {
+								customAlpha = 100;
+							} else {
+								customAlpha = [alphaViewPrefCustom doubleValue];
+							}
+							break;
+						default:
+							NSLog(@"CustomCC ERROR: alphaViewPrefChoice switch is default!");
+							customAlpha = 100;
+							break;
+					}
+					%orig(customAlpha/100);
+					setValueForKey(alphaViewPrefChoice, @"alphaViewPrefChoice");
+					setValueForKey(alphaViewPrefCustom, @"alphaViewPrefCustom");
+				}
+				//Alpha <end>
+			}
+		//}
   }
 
   -(void)setFrame:(CGRect)arg1 {
@@ -222,41 +270,117 @@ static void setValueForKey(id value, NSString *key) {
     double screenWidth = screenSize.width;
 
     if (!enableTweak) {
-      return %orig(arg1);
+      %orig(arg1);
     } else {
 		//else the tweak is enabled <start>
-			// CCPos <start>
-      if ([posPrefChoice isEqualToString:@"Default"]) {
-        newFrame.origin.y = 0;
-      } else if ([posPrefChoice isEqualToString:@"Bottom"]){
-        newFrame.origin.y = screenHeight - newFrame.size.height;
-      } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
-        newFrame.origin.y = screenHeight/2;
-      } else if ([posPrefChoice isEqualToString:@"Above Dock"]) {
-        double posAboveDock = screenHeight - 93;
-        if ([sizePrefChoice isEqualToString:@"Half"]){
-          newFrame.origin.y = posAboveDock - (screenHeight/2);
-        } else if ([sizePrefChoice isEqualToString:@"Custom"]) {
-          newFrame.origin.y = posAboveDock - [sizePrefH doubleValue];
-        } else {
-          newFrame.origin.y = posAboveDock;
-        }
-      } else if ([posPrefChoice isEqualToString:@"Custom"]) {
-        if ([posPrefX isEqualToString:@""]) {
-          newFrame.origin.x = 0;
-        } else {
-          newFrame.origin.x = [posPrefX doubleValue];
-        }
-        if ([posPrefY isEqualToString:@""]) {
-          newFrame.origin.y = 0;
-        } else {
-          newFrame.origin.y = [posPrefY doubleValue];
-        }
-      }
-			setValueForKey(posPrefChoice, @"posPrefChoice");
-			setValueForKey(posPrefX, @"posPrefX");
-			setValueForKey(posPrefY, @"posPrefY");
-			// CCPos <end>
+
+			double newFrameX = 0;
+			double newFrameY = 0;
+			double newFrameH = 0;
+			double newFrameW = 0;
+
+			//CCPos start
+			double posAboveDock = screenHeight - 93;
+			if ([posPrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: posPrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+																 @"Bottom" : @1,
+															 @"Midpoint" : @2,
+														 @"Above Dock" : @3,
+														 			 @"Half" : @4,
+																 @"Custom" : @5,
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:posPrefChoice];
+				NSLog(@"CustomCC LOG: posPrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0://default
+						newFrameY = 0;
+						break;
+					case 1://Bottom
+						newFrameY = screenHeight - newFrameH;
+						break;
+					case 2://Midpoint
+						newFrameY = screenHeight/2;
+						break;
+					case 3://Above Dock
+						if ([sizePrefChoice isEqualToString:@"Half"]){
+							newFrameY = posAboveDock - (screenHeight/2);
+						} else if ([sizePrefChoice isEqualToString:@"Custom"]) {
+							newFrameY = posAboveDock - [sizePrefH doubleValue];
+						} else {
+							newFrameY = posAboveDock;
+						}
+						break;
+					case 4://Half
+						newFrameY = 0;
+						break;
+					case 5://custom
+						if ([posPrefX isEqualToString:@""]) {
+							newFrameX = 0;
+						} else {
+							newFrameX = [posPrefX doubleValue];
+						}
+						if ([posPrefY isEqualToString:@""]) {
+							newFrameY = 0;
+						} else {
+							newFrameY = [posPrefY doubleValue];
+						}
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: posPrefChoice switch is default!");
+						newFrameY = 0;
+						break;
+				}
+				setValueForKey(posPrefChoice, @"posPrefChoice");
+				setValueForKey(posPrefX, @"posPrefX");
+				setValueForKey(posPrefY, @"posPrefY");
+			}
+			//CCPos <end>
+
+			//CCsize <start>
+			if ([sizePrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: sizePrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+                      						 @"Half" : @1,
+																 @"Custom" : @2,
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:sizePrefChoice];
+				NSLog(@"CustomCC LOG: sizePrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0://default
+						scaleH = scaleW = 100;
+						break;
+					case 1://Half
+						scaleH = scaleW = 75;
+						break;
+					case 2://custom
+						if ([sizePrefW isEqualToString:@""]) {
+							newFrame.size.width = screenWidth;
+						} else {
+							newFrame.size.width = [sizePrefW doubleValue];
+						}
+						if ([sizePrefH isEqualToString:@""]) {
+							newFrame.size.height = screenHeight;
+						} else {
+							newFrame.size.height = [sizePrefH doubleValue];
+						}
+						//////////////////////////////
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: scaleCCPrefChoice switch is default!");
+						scaleH = scaleW = 100;
+						break;
+				}
+				self.transform = CGAffineTransformMakeScale(scaleW/100, scaleH/100);
+				setValueForKey(sizePrefChoice, @"sizePrefChoice");
+				setValueForKey(sizePrefH, @"sizePrefH");
+				setValueForKey(sizePrefW, @"sizePrefW");
+			}
+			//CCsize <end>
 
       if ([sizePrefChoice isEqualToString:@"Full"]) {
         newFrame.origin.y = 0;
@@ -284,7 +408,6 @@ static void setValueForKey(id value, NSString *key) {
 			setValueForKey(sizePrefChoice, @"sizePrefChoice");
 			setValueForKey(sizePrefH, @"sizePrefH");
 			setValueForKey(sizePrefW, @"sizePrefW");
-      %orig(newFrame);
 
       //setCornerRadius <start>
 			double cornerRadius = 0;
@@ -294,7 +417,7 @@ static void setValueForKey(id value, NSString *key) {
 				NSDictionary *cases = @{@"Default" : @0,
                         						 @"25" : @1,
 																		 @"50" : @2,
-																 @"Custom" : @3,
+																 @"Custom" : @3
 															 };
 				NSNumber *value = 0;
 				value = [cases objectForKey:cornerRadiusPrefChoice];
@@ -378,6 +501,12 @@ static void setValueForKey(id value, NSString *key) {
 				setValueForKey(scaleCCPrefW, @"scaleCCPrefW");
 			}
 			//setScaleCC <end>
+
+			newFrame.size.width = newFrameW;
+			newFrame.size.height = newFrameH;
+			newFrame.origin.x = newFrameX;
+			newFrame.origin.y = newFrameY;
+			%orig(newFrame);
     }
 		//else the tweak is enabled <end>
   }

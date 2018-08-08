@@ -30,7 +30,6 @@
 
 static bool enableTweak = NO;
 static NSString *colorPrefCustom;
-UIColor *colorPrefCustomValue = LCPParseColorString(colorPrefCustom, @"#ff0000");
 
 static NSString *backgroundBlurPrefChoice;
 static NSString *backgroundBlurPrefCustom;
@@ -64,6 +63,7 @@ static NSString *posCollectionViewPrefY;
 
 
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.leroy.CustomCCPreferences.plist"
+#define PreferencesChangedNotification "com.leroy.CustomCCPreferences/preferencesChanged"
 #define boolValueForKey(key) [[[NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)] valueForKey:key] boolValue]
 #define valueForKey(key) [[NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)] valueForKey:key]
 
@@ -129,7 +129,7 @@ static void setValueForKey(id value, NSString *key) {
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBControlCenterController; @class SpringBoard; @class CCUIHeaderPocketView; @class SBControlCenterWindow; @class _MTBackdropView; @class CCUIModuleCollectionView; 
+@class CCUIModuleCollectionView; @class SpringBoard; @class SBControlCenterController; @class CCUIHeaderPocketView; @class SBControlCenterWindow; @class _MTBackdropView; 
 static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$_MTBackdropView$layoutSubviews(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$)(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterController$dismissAnimated$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterController* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$_ungrouped$SBControlCenterController$dismissAnimated$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterController* _LOGOS_SELF_CONST, SEL, BOOL); static void _logos_method$_ungrouped$SpringBoard$handleTapGesture$(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL, UITapGestureRecognizer* ); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, double); static void (*_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$)(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIHeaderPocketView* _LOGOS_SELF_CONST, SEL, CGRect); static void (*_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$)(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); static void _logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$(_LOGOS_SELF_TYPE_NORMAL CCUIModuleCollectionView* _LOGOS_SELF_CONST, SEL, CGRect); 
 
 #line 110 "Tweak.xm"
@@ -147,24 +147,49 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 
 	static void _logos_method$_ungrouped$_MTBackdropView$setBlurRadius$(_LOGOS_SELF_TYPE_NORMAL _MTBackdropView* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
 		loadPreferences();
-		double myBlur = 30;
 		if(!enableTweak){
-			_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$(self, _cmd, arg1);
-		} else {
-			if ([backgroundBlurPrefChoice isEqualToString:@"Default"]){
-				myBlur = 30;
-			} else if ([backgroundBlurPrefChoice isEqualToString:@"25"]) {
-				myBlur = 15;
-			} else if ([backgroundBlurPrefChoice isEqualToString:@"none"]) {
-				myBlur = 0;
-			} else if ([backgroundBlurPrefChoice isEqualToString:@"Custom"]) {
-				if ([backgroundBlurPrefCustom isEqualToString:@""]) {
-					myBlur = 30;
-				} else {
-					myBlur = [backgroundBlurPrefCustom doubleValue];
+      _logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$(self, _cmd, arg1);
+    } else {
+			
+			double customBlur = 30;
+			if ([backgroundBlurPrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: backgroundBlurPrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+																		 @"25" : @1,
+																		 @"none" : @2,
+																 @"Custom" : @3,
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:backgroundBlurPrefChoice];
+				NSLog(@"CustomCC LOG: backgroundBlurPrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0:
+						customBlur = 30;
+						break;
+					case 1:
+						customBlur = 7.5;
+						break;
+					case 2:
+						customBlur = 0;
+						break;
+					case 3:
+						if ([backgroundBlurPrefCustom isEqualToString:@""]) {
+							customBlur = 30;
+						} else {
+							customBlur = [backgroundBlurPrefCustom doubleValue];
+						}
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: backgroundBlurPrefChoice switch is default!");
+						customBlur = 30;
+						break;
 				}
+				_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$(self, _cmd, customBlur);
+				setValueForKey(backgroundBlurPrefChoice, @"backgroundBlurPrefChoice");
+				setValueForKey(backgroundBlurPrefCustom, @"backgroundBlurPrefCustom");
 			}
-			_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$(self, _cmd, myBlur);
+			
 		}
 	}
 
@@ -215,29 +240,52 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 
   static void _logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, double arg1) {
 		loadPreferences();
-		double myAlpha = 100;
-
-    if(!enableTweak){
-      _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, arg1);
-    } else {
-      if ([alphaViewPrefChoice isEqualToString:@"Default"]) {
-        myAlpha = 100;
-      } else if ([alphaViewPrefChoice isEqualToString:@"50"]) {
-        myAlpha = 50;
-      } else if ([alphaViewPrefChoice isEqualToString:@"25"]) {
-        myAlpha = 25;
-      } else if ([alphaViewPrefChoice isEqualToString:@"Custom"]) {
-        if ([alphaViewPrefCustom isEqualToString:@""]) {
-          myAlpha = 100;
-        } else {
-          myAlpha = [alphaViewPrefCustom doubleValue];
-        }
-      }
-			setValueForKey(alphaViewPrefChoice, @"alphaViewPrefChoice");
-			setValueForKey(alphaViewPrefCustom, @"alphaViewPrefCustom");
-      _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, myAlpha/100);
-    }
-
+		
+			if(!enableTweak){
+	      _logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, arg1);
+	    } else {
+				
+				double customAlpha = 100;
+				if ([alphaViewPrefChoice isEqualToString:@""]) {
+					NSLog(@"CustomCC ERROR: alphaViewPrefChoice is empty!");
+				} else {
+					NSDictionary *cases = @{@"Default" : @0,
+																			 @"50" : @1,
+																			 @"25" : @2,
+																	 @"Custom" : @3,
+																 };
+					NSNumber *value = 0;
+					value = [cases objectForKey:alphaViewPrefChoice];
+					NSLog(@"CustomCC LOG: alphaViewPrefChoice value is: %@", value);
+					switch ([value intValue]) {
+						case 0:
+							customAlpha = 100;
+							break;
+						case 1:
+							customAlpha = 50;
+							break;
+						case 2:
+							customAlpha = 25;
+							break;
+						case 3:
+							if ([alphaViewPrefCustom isEqualToString:@""]) {
+								customAlpha = 100;
+							} else {
+								customAlpha = [alphaViewPrefCustom doubleValue];
+							}
+							break;
+						default:
+							NSLog(@"CustomCC ERROR: alphaViewPrefChoice switch is default!");
+							customAlpha = 100;
+							break;
+					}
+					_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$(self, _cmd, customAlpha/100);
+					setValueForKey(alphaViewPrefChoice, @"alphaViewPrefChoice");
+					setValueForKey(alphaViewPrefCustom, @"alphaViewPrefCustom");
+				}
+				
+			}
+		
   }
 
   static void _logos_method$_ungrouped$SBControlCenterWindow$setFrame$(_LOGOS_SELF_TYPE_NORMAL SBControlCenterWindow* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, CGRect arg1) {
@@ -248,38 +296,74 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
     double screenWidth = screenSize.width;
 
     if (!enableTweak) {
-      return _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, arg1);
+      _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, arg1);
     } else {
-      if ([posPrefChoice isEqualToString:@"Default"]) {
-        newFrame.origin.y = 0;
-      } else if ([posPrefChoice isEqualToString:@"Bottom"]){
-        newFrame.origin.y = screenHeight - newFrame.size.height;
-      } else if ([posPrefChoice isEqualToString:@"Midpoint"]) {
-        newFrame.origin.y = screenHeight/2;
-      } else if ([posPrefChoice isEqualToString:@"Above Dock"]) {
-        double posAboveDock = screenHeight - 93;
-        if ([sizePrefChoice isEqualToString:@"Half"]){
-          newFrame.origin.y = posAboveDock - (screenHeight/2);
-        } else if ([sizePrefChoice isEqualToString:@"Custom"]) {
-          newFrame.origin.y = posAboveDock - [sizePrefH doubleValue];
-        } else {
-          newFrame.origin.y = posAboveDock;
-        }
-      } else if ([posPrefChoice isEqualToString:@"Custom"]) {
-        if ([posPrefX isEqualToString:@""]) {
-          newFrame.origin.x = 0;
-        } else {
-          newFrame.origin.x = [posPrefX doubleValue];
-        }
-        if ([posPrefY isEqualToString:@""]) {
-          newFrame.origin.y = 0;
-        } else {
-          newFrame.origin.y = [posPrefY doubleValue];
-        }
-      }
-			setValueForKey(posPrefChoice, @"posPrefChoice");
-			setValueForKey(posPrefX, @"posPrefX");
-			setValueForKey(posPrefY, @"posPrefY");
+		
+
+			double newFrameX = 0;
+			double newFrameY = 0;
+			double newFrameH = 0;
+			double newFrameW = 0;
+
+			
+			double posAboveDock = screenHeight - 93;
+			if ([posPrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: posPrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+																 @"Bottom" : @1,
+															 @"Midpoint" : @2,
+														 @"Above Dock" : @3,
+														 			 @"Half" : @4,
+																 @"Custom" : @5,
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:posPrefChoice];
+				NSLog(@"CustomCC LOG: posPrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0:
+						newFrameY = 0;
+						break;
+					case 1:
+						newFrameY = screenHeight - newFrameH;
+						break;
+					case 2:
+						newFrameY = screenHeight/2;
+						break;
+					case 3:
+						if ([sizePrefChoice isEqualToString:@"Half"]){
+							newFrameY = posAboveDock - (screenHeight/2);
+						} else if ([sizePrefChoice isEqualToString:@"Custom"]) {
+							newFrameY = posAboveDock - [sizePrefH doubleValue];
+						} else {
+							newFrameY = posAboveDock;
+						}
+						break;
+					case 4:
+						newFrameY = 0;
+						break;
+					case 5:
+						if ([posPrefX isEqualToString:@""]) {
+							newFrameX = 0;
+						} else {
+							newFrameX = [posPrefX doubleValue];
+						}
+						if ([posPrefY isEqualToString:@""]) {
+							newFrameY = 0;
+						} else {
+							newFrameY = [posPrefY doubleValue];
+						}
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: posPrefChoice switch is default!");
+						newFrameY = 0;
+						break;
+				}
+				setValueForKey(posPrefChoice, @"posPrefChoice");
+				setValueForKey(posPrefX, @"posPrefX");
+				setValueForKey(posPrefY, @"posPrefY");
+			}
+			
 
       if ([sizePrefChoice isEqualToString:@"Full"]) {
         newFrame.origin.y = 0;
@@ -307,24 +391,46 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 			setValueForKey(sizePrefChoice, @"sizePrefChoice");
 			setValueForKey(sizePrefH, @"sizePrefH");
 			setValueForKey(sizePrefW, @"sizePrefW");
-      _logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, newFrame);
 
       
-      if ([cornerRadiusPrefChoice isEqualToString:@"Default"]) {
-        self._cornerRadius = 0;
-      } else if ([cornerRadiusPrefChoice isEqualToString:@"25"]) {
-        self._cornerRadius = 25;
-      } else if ([cornerRadiusPrefChoice isEqualToString:@"50"]) {
-        self._cornerRadius = 50;
-      } else if ([cornerRadiusPrefChoice isEqualToString:@"Custom"]) {
-        if ([cornerRadiusPrefCustom isEqualToString:@""]) {
-          self._cornerRadius = 0;
-        } else {
-          self._cornerRadius = [cornerRadiusPrefCustom doubleValue];
-        }
-      }
-			setValueForKey(cornerRadiusPrefChoice, @"cornerRadiusPrefChoice");
-			setValueForKey(cornerRadiusPrefCustom, @"cornerRadiusPrefCustom");
+			double cornerRadius = 0;
+			if ([cornerRadiusPrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: cornerRadiusPrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+                        						 @"25" : @1,
+																		 @"50" : @2,
+																 @"Custom" : @3
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:cornerRadiusPrefChoice];
+				NSLog(@"CustomCC LOG: cornerRadiusPrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0:
+						cornerRadius = 0;
+						break;
+					case 1:
+						cornerRadius = 25;
+						break;
+					case 2:
+						cornerRadius = 50;
+						break;
+					case 3:
+						if ([cornerRadiusPrefCustom isEqualToString:@""]) {
+							cornerRadius = 0;
+						} else {
+							cornerRadius = [cornerRadiusPrefCustom doubleValue];
+						}
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: cornerRadiusPrefChoice switch is default!");
+						cornerRadius = 0;
+						break;
+				}
+				self._cornerRadius = cornerRadius;
+				setValueForKey(cornerRadiusPrefChoice, @"cornerRadiusPrefChoice");
+				setValueForKey(cornerRadiusPrefCustom, @"cornerRadiusPrefCustom");
+			}
 			
 
 			
@@ -343,42 +449,49 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 				NSLog(@"CustomCC LOG: scaleCCPrefChoice value is: %@", value);
 				switch ([value intValue]) {
 					case 0:
-						scaleH = scaleW = 1;
+						scaleH = scaleW = 100;
 						break;
 					case 1:
-						scaleH = scaleW = 0.75;
+						scaleH = scaleW = 75;
 						break;
 					case 2:
-						scaleH = scaleW = 0.5;
+						scaleH = scaleW = 50;
 						break;
 					case 3:
 						if (([scaleCCPrefH isEqualToString:@""]) && ([scaleCCPrefW isEqualToString:@""])) {
-							scaleH = scaleW = 1;
+							scaleH = scaleW = 100;
 						} else {
 							if ([scaleCCPrefH isEqualToString:@""]) {
-								scaleH = 1;
-								scaleW = [scaleCCPrefW doubleValue]/100;
+								scaleH = 100;
+								scaleW = [scaleCCPrefW doubleValue];
 							} else if ([scaleCCPrefW isEqualToString:@""]) {
-								scaleH = [scaleCCPrefH doubleValue]/100;
-								scaleW = 1;
+								scaleH = [scaleCCPrefH doubleValue];
+								scaleW = 100;
 							} else {
-								scaleH = [scaleCCPrefH doubleValue]/100;
-								scaleH = [scaleCCPrefH doubleValue]/100;
+								scaleH = [scaleCCPrefH doubleValue];
+								scaleH = [scaleCCPrefH doubleValue];
 							}
 						}
 						break;
 					default:
-						NSLog(@"CustomCC ERROR: scaleCCPrefChoice is default!");
-						scaleH = scaleW = 1;
+						NSLog(@"CustomCC ERROR: scaleCCPrefChoice switch is default!");
+						scaleH = scaleW = 100;
 						break;
 				}
+				self.transform = CGAffineTransformMakeScale(scaleW/100, scaleH/100);
 				setValueForKey(scaleCCPrefChoice, @"scaleCCPrefChoice");
 				setValueForKey(scaleCCPrefH, @"scaleCCPrefH");
 				setValueForKey(scaleCCPrefW, @"scaleCCPrefW");
-				self.transform = CGAffineTransformMakeScale(scaleW, scaleH);
 			}
 			
+
+			newFrame.size.width = newFrameW;
+			newFrame.size.height = newFrameH;
+			newFrame.origin.x = newFrameX;
+			newFrame.origin.y = newFrameY;
+			_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$(self, _cmd, newFrame);
     }
+		
   }
 
 
@@ -435,6 +548,12 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 									headerSizeW = [posHeaderViewPrefW doubleValue];
 								}
 							}
+							break;
+						default:
+							NSLog(@"CustomCC ERROR: posHeaderViewPrefChoice switch is default!");
+							headerSizeH = 64;
+							headerSizeW = screenWidth;
+							break;
 					}
 					newFrame.size.height = headerSizeH;
 					newFrame.size.width = headerSizeW;
@@ -524,24 +643,31 @@ static void (*_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews)(_LOGOS_SELF
 
 
 
-static __attribute__((constructor)) void _logosLocalCtor_b145a852(int __unused argc, char __unused **argv, char __unused **envp) {
 
-	
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-	loadPreferences();
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static __attribute__((constructor)) void _logosLocalCtor_4831a060(int __unused argc, char __unused **argv, char __unused **envp) {
+	@autoreleasepool{
+		loadPreferences();
+		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	}
 }
-
-
-
-
-
-
-
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$_MTBackdropView = objc_getClass("_MTBackdropView"); MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(layoutSubviews), (IMP)&_logos_method$_ungrouped$_MTBackdropView$layoutSubviews, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$layoutSubviews);MSHookMessageEx(_logos_class$_ungrouped$_MTBackdropView, @selector(setBlurRadius:), (IMP)&_logos_method$_ungrouped$_MTBackdropView$setBlurRadius$, (IMP*)&_logos_orig$_ungrouped$_MTBackdropView$setBlurRadius$);Class _logos_class$_ungrouped$SBControlCenterController = objc_getClass("SBControlCenterController"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterController, @selector(dismissAnimated:), (IMP)&_logos_method$_ungrouped$SBControlCenterController$dismissAnimated$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterController$dismissAnimated$);Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); { char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(UITapGestureRecognizer* ), strlen(@encode(UITapGestureRecognizer* ))); i += strlen(@encode(UITapGestureRecognizer* )); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(handleTapGesture:), (IMP)&_logos_method$_ungrouped$SpringBoard$handleTapGesture$, _typeEncoding); }Class _logos_class$_ungrouped$SBControlCenterWindow = objc_getClass("SBControlCenterWindow"); MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setAlphaAndObeyBecauseIAmTheWindowManager:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setAlphaAndObeyBecauseIAmTheWindowManager$);MSHookMessageEx(_logos_class$_ungrouped$SBControlCenterWindow, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$SBControlCenterWindow$setFrame$, (IMP*)&_logos_orig$_ungrouped$SBControlCenterWindow$setFrame$);Class _logos_class$_ungrouped$CCUIHeaderPocketView = objc_getClass("CCUIHeaderPocketView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIHeaderPocketView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIHeaderPocketView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIHeaderPocketView$setFrame$);Class _logos_class$_ungrouped$CCUIModuleCollectionView = objc_getClass("CCUIModuleCollectionView"); MSHookMessageEx(_logos_class$_ungrouped$CCUIModuleCollectionView, @selector(setFrame:), (IMP)&_logos_method$_ungrouped$CCUIModuleCollectionView$setFrame$, (IMP*)&_logos_orig$_ungrouped$CCUIModuleCollectionView$setFrame$);} }
-#line 519 "Tweak.xm"
+#line 645 "Tweak.xm"
