@@ -29,7 +29,6 @@ TODO LIST:
 
 static bool enableTweak = NO;
 static NSString *colorPrefCustom;
-UIColor *colorPrefCustomValue = LCPParseColorString(colorPrefCustom, @"#ff0000");
 
 static NSString *backgroundBlurPrefChoice;
 static NSString *backgroundBlurPrefCustom;
@@ -63,6 +62,7 @@ static NSString *posCollectionViewPrefY;
 
 
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.leroy.CustomCCPreferences.plist"
+#define PreferencesChangedNotification "com.leroy.CustomCCPreferences/preferencesChanged"
 #define boolValueForKey(key) [[[NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)] valueForKey:key] boolValue]
 #define valueForKey(key) [[NSDictionary dictionaryWithContentsOfFile:@(PLIST_PATH)] valueForKey:key]
 
@@ -224,6 +224,8 @@ static void setValueForKey(id value, NSString *key) {
     if (!enableTweak) {
       return %orig(arg1);
     } else {
+		//else the tweak is enabled <start>
+			// CCPos <start>
       if ([posPrefChoice isEqualToString:@"Default"]) {
         newFrame.origin.y = 0;
       } else if ([posPrefChoice isEqualToString:@"Bottom"]){
@@ -254,6 +256,7 @@ static void setValueForKey(id value, NSString *key) {
 			setValueForKey(posPrefChoice, @"posPrefChoice");
 			setValueForKey(posPrefX, @"posPrefX");
 			setValueForKey(posPrefY, @"posPrefY");
+			// CCPos <end>
 
       if ([sizePrefChoice isEqualToString:@"Full"]) {
         newFrame.origin.y = 0;
@@ -283,23 +286,46 @@ static void setValueForKey(id value, NSString *key) {
 			setValueForKey(sizePrefW, @"sizePrefW");
       %orig(newFrame);
 
-      //setCornerRadius start
-      if ([cornerRadiusPrefChoice isEqualToString:@"Default"]) {
-        self._cornerRadius = 0;
-      } else if ([cornerRadiusPrefChoice isEqualToString:@"25"]) {
-        self._cornerRadius = 25;
-      } else if ([cornerRadiusPrefChoice isEqualToString:@"50"]) {
-        self._cornerRadius = 50;
-      } else if ([cornerRadiusPrefChoice isEqualToString:@"Custom"]) {
-        if ([cornerRadiusPrefCustom isEqualToString:@""]) {
-          self._cornerRadius = 0;
-        } else {
-          self._cornerRadius = [cornerRadiusPrefCustom doubleValue];
-        }
-      }
-			setValueForKey(cornerRadiusPrefChoice, @"cornerRadiusPrefChoice");
-			setValueForKey(cornerRadiusPrefCustom, @"cornerRadiusPrefCustom");
-			//setCornerRadius end
+      //setCornerRadius <start>
+			double cornerRadius = 0;
+			if ([cornerRadiusPrefChoice isEqualToString:@""]) {
+				NSLog(@"CustomCC ERROR: cornerRadiusPrefChoice is empty!");
+			} else {
+				NSDictionary *cases = @{@"Default" : @0,
+                        						 @"25" : @1,
+																		 @"50" : @2,
+																 @"Custom" : @3,
+															 };
+				NSNumber *value = 0;
+				value = [cases objectForKey:cornerRadiusPrefChoice];
+				NSLog(@"CustomCC LOG: cornerRadiusPrefChoice value is: %@", value);
+				switch ([value intValue]) {
+					case 0://default
+						cornerRadius = 0;
+						break;
+					case 1://25
+						cornerRadius = 25;
+						break;
+					case 2://50
+						cornerRadius = 50;
+						break;
+					case 3://custom
+						if ([cornerRadiusPrefCustom isEqualToString:@""]) {
+							cornerRadius = 0;
+						} else {
+							cornerRadius = [cornerRadiusPrefCustom doubleValue];
+						}
+						break;
+					default:
+						NSLog(@"CustomCC ERROR: cornerRadiusPrefChoice switch is default!");
+						cornerRadius = 0;
+						break;
+				}
+				self._cornerRadius = cornerRadius;
+				setValueForKey(cornerRadiusPrefChoice, @"cornerRadiusPrefChoice");
+				setValueForKey(cornerRadiusPrefCustom, @"cornerRadiusPrefCustom");
+			}
+			//setCornerRadius <end>
 
 			//setScaleCC start
 			double scaleH = 0;
@@ -316,43 +342,44 @@ static void setValueForKey(id value, NSString *key) {
 				value = [cases objectForKey:scaleCCPrefChoice];
 				NSLog(@"CustomCC LOG: scaleCCPrefChoice value is: %@", value);
 				switch ([value intValue]) {
-					case 0:
-						scaleH = scaleW = 1;
+					case 0://default
+						scaleH = scaleW = 100;
 						break;
-					case 1:
-						scaleH = scaleW = 0.75;
+					case 1://75
+						scaleH = scaleW = 75;
 						break;
-					case 2:
-						scaleH = scaleW = 0.5;
+					case 2://50
+						scaleH = scaleW = 50;
 						break;
-					case 3:
+					case 3://custom
 						if (([scaleCCPrefH isEqualToString:@""]) && ([scaleCCPrefW isEqualToString:@""])) {
-							scaleH = scaleW = 1;
+							scaleH = scaleW = 100;
 						} else {
 							if ([scaleCCPrefH isEqualToString:@""]) {
-								scaleH = 1;
-								scaleW = [scaleCCPrefW doubleValue]/100;
+								scaleH = 100;
+								scaleW = [scaleCCPrefW doubleValue];
 							} else if ([scaleCCPrefW isEqualToString:@""]) {
-								scaleH = [scaleCCPrefH doubleValue]/100;
-								scaleW = 1;
+								scaleH = [scaleCCPrefH doubleValue];
+								scaleW = 100;
 							} else {
-								scaleH = [scaleCCPrefH doubleValue]/100;
-								scaleH = [scaleCCPrefH doubleValue]/100;
+								scaleH = [scaleCCPrefH doubleValue];
+								scaleH = [scaleCCPrefH doubleValue];
 							}
 						}
 						break;
 					default:
-						NSLog(@"CustomCC ERROR: scaleCCPrefChoice is default!");
-						scaleH = scaleW = 1;
+						NSLog(@"CustomCC ERROR: scaleCCPrefChoice switch is default!");
+						scaleH = scaleW = 100;
 						break;
 				}
+				self.transform = CGAffineTransformMakeScale(scaleW/100, scaleH/100);
 				setValueForKey(scaleCCPrefChoice, @"scaleCCPrefChoice");
 				setValueForKey(scaleCCPrefH, @"scaleCCPrefH");
 				setValueForKey(scaleCCPrefW, @"scaleCCPrefW");
-				self.transform = CGAffineTransformMakeScale(scaleW, scaleH);
 			}
-			//setScaleCC end
+			//setScaleCC <end>
     }
+		//else the tweak is enabled <end>
   }
 
 %end
@@ -409,6 +436,12 @@ static void setValueForKey(id value, NSString *key) {
 									headerSizeW = [posHeaderViewPrefW doubleValue];
 								}
 							}
+							break;
+						default:
+							NSLog(@"CustomCC ERROR: posHeaderViewPrefChoice switch is default!");
+							headerSizeH = 64;
+							headerSizeW = screenWidth;
+							break;
 					}
 					newFrame.size.height = headerSizeH;
 					newFrame.size.width = headerSizeW;
@@ -439,7 +472,7 @@ static void setValueForKey(id value, NSString *key) {
 			if (!enableTweak) {
 	      return %orig(arg1);
 	    } else {
-				//setScaleCC start
+				//ModuleCollectionPos <start>
 				double posX = 0;
 				double posY = 0;
 				if ([posCollectionViewPrefChoice isEqualToString:@""]) {
@@ -492,27 +525,34 @@ static void setValueForKey(id value, NSString *key) {
 					newFrame.origin.y = posY;
 					%orig(newFrame);
 				}
-				//setScaleCC end
+				//ModuleCollectionPos <end>
 			}
     }
 
 %end
 
-%ctor {
 
-	//CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-	loadPreferences();
-	// @autoreleasepool {
-	// 	loadPreferences();
-	// 	//CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &reloadSettings, PreferencesNotification, NULL, CFNotificationSuspensionBehaviorCoalesce);
-	// 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, 0);
-	// }
-}
-
-// %ctor {
-// 	 @autoreleasepool {
-// 		 CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-// 		 loadPreferences();
-// 	 }
+// static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+// 	[preferences release];
+// 	preferences = [[NSDictionary alloc] initWithContentsOfFile:PLIST_PATH];
 // }
+//
+// __attribute__((constructor)) static void hookslaw_init() {
+// 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+//
+//     formatter = [[NSNumberFormatter alloc] init];
+//     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//
+// 	preferences = [[NSDictionary alloc] initWithContentsOfFile:PLIST_PATH];
+// 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, PreferencesChangedCallback, CFSTR(PreferencesChangedNotification), NULL, CFNotificationSuspensionBehaviorCoalesce);
+//
+//
+// 	[pool release];
+// }
+
+%ctor {
+	@autoreleasepool{
+		loadPreferences();
+		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPreferences, CFSTR("com.leroy.CustomCCPreferences/preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	}
+}
