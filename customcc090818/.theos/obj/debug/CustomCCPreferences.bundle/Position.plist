@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>Control Center Position</string>
+
+	<key>items</key>
+	<array>
+		<!-- <dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>CREDITS_BY</string>
+		</dict> -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Choose the position of the Control Center. For custom values, select 'Custom' above and use the input fields below.</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<string>Default</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>posPrefChoice</string>
+			<key>validValues</key>
+			<array>
+				<string>Default</string>
+				<string>Bottom</string>
+				<string>Midpoint</string>
+				<string>Above Dock</string>
+				<string>Custom</string>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>Default</string>
+				<string>Bottom</string>
+				<string>Midpoint</string>
+				<string>Above Dock</string>
+				<string>Custom</string>
+			</array>
+			<key>alignment</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>The top left part of the screen is point: y = 0, x = 0</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>y</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>posPrefY</string>
+			<key>label</key>
+			<string>Custom 'y' value:</string>
+		</dict>
+		<dict>
+			<key>PostNotification</key>
+			<string>com.leroy.CustomCCPreferences/preferencesChanged</string>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>x</string>
+			<key>defaults</key>
+			<string>com.leroy.CustomCCPreferences</string>
+			<key>key</key>
+			<string>posPrefX</string>
+			<key>label</key>
+			<string>Custom 'x' value:</string>
+		</dict>
+	</array>
+</dict>
+</plist>
