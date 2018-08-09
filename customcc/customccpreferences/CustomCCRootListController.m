@@ -2,12 +2,16 @@
 #include <spawn.h>
 #include <signal.h>
 
+
 @implementation CustomCCRootListController
 
 	- (NSArray *)specifiers {
 
 		if (!_specifiers) {
 			_specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
+			for(int i = 0; i < [_specifiers count]; i++){
+				NSLog(@"CustomCC LOG: _specifiers is: %@", _specifiers[i]);
+			}
 		}
 		return _specifiers;
 	}
@@ -146,6 +150,7 @@
 		}
 }
 
+
 	- (void)showTwitter {
 	    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"twitter://"]]) [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://user?screen_name=IDEK_a_Leroy"] options:@{} completionHandler:nil];
 	    else [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/IDEK_a_Leroy"] options:@{} completionHandler:nil];
@@ -242,4 +247,14 @@
 		}
 	}
 
+@end
+
+@implementation LockGlyphXPrefsCreditsController
+	- (NSArray *)specifiers {
+
+		if (!_specifiers) {
+			_specifiers = [[self loadSpecifiersFromPlistName:@"LockGlyphXPrefs-Credits" target:self] retain];
+		}
+		return _specifiers;
+	}
 @end

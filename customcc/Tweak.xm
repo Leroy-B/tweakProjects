@@ -107,6 +107,14 @@ static void setValueForKey(id value, NSString *key) {
     [dict writeToFile:@(PLIST_PATH) atomically:YES];
 }
 
+static void setValueForDouble(id idValueKey, double currentValue) {
+		NSNumber *myDoubleNumber = [NSNumber numberWithDouble:currentValue];
+		idValueKey = [myDoubleNumber stringValue];
+		NSString *idValueKeyString = @"";
+		setValueForKey(idValueKey, [idValueKeyString stringByAppendingString:[idValueKey stringValue]]);
+		NSLog(@"CustomCC LOG: Setting Values For Key: Current Key is: %@; and the value for is: %f", idValueKey, currentValue);
+}
+
 %hook _MTBackdropView
 
 	-(void)layoutSubviews {
@@ -317,26 +325,34 @@ static void setValueForKey(id value, NSString *key) {
 						newFrameY = 0;
 						break;
 					case 5://custom
-						if ([posPrefX isEqualToString:@""]) {
-							newFrameX = 0;
-						} else {
-							newFrameX = [posPrefX doubleValue];
-						}
-						if ([posPrefY isEqualToString:@""]) {
-							newFrameY = 0;
-						} else {
-							newFrameY = [posPrefY doubleValue];
-						}
+						newFrameX = ([posPrefX isEqualToString:@""]) ? 0 : [posPrefX doubleValue];
+						// if ([posPrefX isEqualToString:@""]) {
+						// 	newFrameX = 0;
+						// } else {
+						// 	newFrameX = [posPrefX doubleValue];
+						// }
+						newFrameY = ([posPrefY isEqualToString:@""]) ? 0 : [posPrefY doubleValue];
+						// if ([posPrefY isEqualToString:@""]) {
+						// 	newFrameY = 0;
+						// } else {
+						// 	newFrameY = [posPrefY doubleValue];
+						// }
 						break;
 					default:
 						NSLog(@"CustomCC ERROR: posPrefChoice switch is default!");
 						newFrameY = 0;
 						break;
 				}
+				if ([posPrefChoice isEqualToString:@"Bottom"] && [sizePrefChoice isEqualToString:@"Custom"]) {
+	        newFrameY = screenHeight - [sizePrefH doubleValue];
+	      }
+				//setValueForDouble(id idValueKey, double currentValue)
+				setValueForDouble(posPrefX, newFrameX);
 				setValueForKey(posPrefChoice, @"posPrefChoice");
 				setValueForKey(posPrefX, @"posPrefX");
 				setValueForKey(posPrefY, @"posPrefY");
 			}
+
 			//CCPos <end>
 
 			//CCsize <start>
@@ -352,62 +368,44 @@ static void setValueForKey(id value, NSString *key) {
 				NSLog(@"CustomCC LOG: sizePrefChoice value is: %@", value);
 				switch ([value intValue]) {
 					case 0://default
-						scaleH = scaleW = 100;
+						newFrameX = 0;
+						newFrameY = 0;
+						newFrameH = screenHeight;
+						newFrameW = screenWidth;
 						break;
 					case 1://Half
-						scaleH = scaleW = 75;
+						newFrameH = screenHeight/2;
 						break;
 					case 2://custom
-						if ([sizePrefW isEqualToString:@""]) {
-							newFrame.size.width = screenWidth;
-						} else {
-							newFrame.size.width = [sizePrefW doubleValue];
-						}
-						if ([sizePrefH isEqualToString:@""]) {
-							newFrame.size.height = screenHeight;
-						} else {
-							newFrame.size.height = [sizePrefH doubleValue];
-						}
+						newFrameW = ([sizePrefW isEqualToString:@""]) ? screenWidth : [sizePrefW doubleValue];
+						// if ([sizePrefW isEqualToString:@""]) {
+						// 	newFrame.size.width = screenWidth;
+						// } else {
+						// 	newFrame.size.width = [sizePrefW doubleValue];
+						// }
+						newFrameH = ([sizePrefH isEqualToString:@""]) ? screenHeight : [sizePrefH doubleValue];
+						// if ([sizePrefH isEqualToString:@""]) {
+						// 	newFrame.size.height = screenHeight;
+						// } else {
+						// 	newFrame.size.height = [sizePrefH doubleValue];
+						// }
 						//////////////////////////////
 						break;
 					default:
-						NSLog(@"CustomCC ERROR: scaleCCPrefChoice switch is default!");
-						scaleH = scaleW = 100;
+						NSLog(@"CustomCC ERROR: sizePrefChoice switch is default!");
+						newFrameX = 0;
+						newFrameY = 0;
+						newFrameH = screenHeight;
+						newFrameW = screenWidth;
 						break;
 				}
-				self.transform = CGAffineTransformMakeScale(scaleW/100, scaleH/100);
 				setValueForKey(sizePrefChoice, @"sizePrefChoice");
 				setValueForKey(sizePrefH, @"sizePrefH");
 				setValueForKey(sizePrefW, @"sizePrefW");
+				setValueForKey(posPrefX, @"posPrefX");
+				setValueForKey(posPrefY, @"posPrefY");
 			}
 			//CCsize <end>
-
-      if ([sizePrefChoice isEqualToString:@"Full"]) {
-        newFrame.origin.y = 0;
-        newFrame.origin.x = 0;
-        newFrame.size.height = screenHeight;
-        newFrame.size.width = screenWidth;
-      } else if ([sizePrefChoice isEqualToString:@"Half"]) {
-        newFrame.size.height = screenHeight/2;
-      } else if ([sizePrefChoice isEqualToString:@"Custom"]) {
-        if ([sizePrefW isEqualToString:@""]) {
-          newFrame.size.width = screenWidth;
-        } else {
-          newFrame.size.width = [sizePrefW doubleValue];
-        }
-        if ([sizePrefH isEqualToString:@""]) {
-          newFrame.size.height = screenHeight;
-        } else {
-          newFrame.size.height = [sizePrefH doubleValue];
-        }
-      }
-
-      if ([posPrefChoice isEqualToString:@"Bottom"] && [sizePrefChoice isEqualToString:@"Custom"]) {
-        newFrame.origin.y = screenHeight - [sizePrefH doubleValue];
-      }
-			setValueForKey(sizePrefChoice, @"sizePrefChoice");
-			setValueForKey(sizePrefH, @"sizePrefH");
-			setValueForKey(sizePrefW, @"sizePrefW");
 
       //setCornerRadius <start>
 			double cornerRadius = 0;

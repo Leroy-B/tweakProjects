@@ -106,6 +106,16 @@
 			<string>Custom 'x' value:</string>
 		</dict>
 		<!-- CCPos end -->
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>label</key>
+			<string>LockGlyphXPrefs-Credits</string>
+			<key>detail</key>
+			<string>LockGlyphXPrefsCreditsController</string>
+			<key>isController</key>
+			<true/>
+		</dict>
 		<!-- CCsize start -->
 		<dict>
 			<key>cell</key>
