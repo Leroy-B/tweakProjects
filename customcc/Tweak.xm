@@ -6,6 +6,7 @@ TODO:
 	- <done> hide header view Altogether (u/shotnine)
 	- hide view colletion earlier than normal on dismiss
 	- dim background; toggles normal
+	- dismiss cc on touch not cc; expand/place the header that dismisses the cc
 */
 
 #import "libcolorpicker.h"
