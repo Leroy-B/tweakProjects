@@ -1,5 +1,6 @@
-TARGET = iphone::11.0
-ARCHS = arm64
+TARGET = simulator:clang::11.0
+ARCHS = x86_64
+
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = FLEXit
@@ -9,5 +10,6 @@ FLEXit_LIBRARIES = sqlite3 z
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
-after-install::
-	install.exec "killall -9 SpringBoard"
+
+#after-install::
+#	install.exec "killall -9 SpringBoard"
