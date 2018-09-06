@@ -689,6 +689,18 @@ static void setValueForDouble(id idValueKey, double currentValue) {
 
 %end
 
+%hook SBControlCenterController
+
+
+    //Start showing the cc
+    -(void)_willBeginTransition {
+
+        NSLog(@"AlwaysRemindMe LOG: _willBeginTransition got called");
+        %orig();
+    }
+
+%end
+
 
 %ctor {
 	@autoreleasepool{
